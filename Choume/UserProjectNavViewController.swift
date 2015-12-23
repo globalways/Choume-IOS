@@ -1,16 +1,9 @@
-//
-//  UserProjectNavViewController.swift
-//  iBBS
-//
-//  Created by 汪阳坪 on 15/11/25.
-//  Copyright © 2015年 iAugus. All rights reserved.
-//
-
 import UIKit
 
-class UserProjectNavViewController: UINavigationController {
+class ProjectListNavViewController: UINavigationController {
     
     var type: ProjectCategory?
+    var listTitle: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +16,10 @@ class UserProjectNavViewController: UINavigationController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setType(type : ProjectCategory){
+    func setType(type : ProjectCategory, title: String){
         var vc = self.childViewControllers[0] as! StartedVC
         vc.setType(type)
+        vc.navigationItemTitle = title
     }
     
     /*
@@ -44,4 +38,5 @@ enum ProjectCategory {
     case Started
     case Involved
     case Stared
+    case Default
 }

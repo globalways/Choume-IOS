@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "D05E3238C3DDCDF903527D982EA1CBD892E46B32",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "D05E3238C3DDCDF903527D982EA1CBD892E46B32" : 0,
+    "0666B8749607A9097FA47BC516240266C4E79D1D" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "4AA70D41-D8E2-4039-9B8C-79C0CCF8330F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "D05E3238C3DDCDF903527D982EA1CBD892E46B32" : "Choume\/",
+    "0666B8749607A9097FA47BC516240266C4E79D1D" : "..\/..\/wang\/docht\/app%20proto\/protobuf-swift"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Choume",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Choume.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:alexeyxo\/protobuf-swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0666B8749607A9097FA47BC516240266C4E79D1D"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/globalways\/Choume.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D05E3238C3DDCDF903527D982EA1CBD892E46B32"
+    }
+  ]
+}

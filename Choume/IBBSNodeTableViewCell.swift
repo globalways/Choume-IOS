@@ -15,7 +15,7 @@ import SwiftyJSON
 
 class IBBSNodeTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var userProfireImage: IBBSAvatarImageView!
+    @IBOutlet weak var userProfireImage: CMAvatarImageView!
     @IBOutlet weak var topicLabel: UILabel!
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var postTime: UILabel!

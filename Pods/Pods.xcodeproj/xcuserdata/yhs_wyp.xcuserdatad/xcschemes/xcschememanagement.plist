@@ -4,12 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>AFNetworking.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Alamofire.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>GearRefreshControl.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>HappyDNS.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>JSONJoy-Swift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -24,6 +39,21 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ProtocolBuffers-Swift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Qiniu.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SVProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,6 +62,26 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>02A5478BF524C6BD095C72D7990D7D88</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>16C1D1677BA1C650563350410532E507</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2DB6C2CD7957113C2BEC554CE594753F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4878C70B21CA37D7CB8A476BF986741B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>4B2F30D90D85A544E9EFE2A49D392C25</key>
 		<dict>
 			<key>primary</key>
@@ -47,12 +97,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8B643BA3262A5C95A823A50731990717</key>
+		<key>5BBC99C2374585E8EA199BB5B0AF6A40</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>93394AA282A3B49F264731CF708B86DC</key>
+		<key>74D746023527F3EEA56BFD71F01F77C1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C4CC14C604C22D5A5E216790E40BF9CF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F8DF2A4E3932879E8A0B80CDCCCE3433</key>
 		<dict>
 			<key>primary</key>
 			<true/>

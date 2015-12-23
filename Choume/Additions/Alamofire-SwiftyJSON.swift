@@ -10,6 +10,7 @@ import Foundation
 
 import Alamofire
 import SwiftyJSON
+import JSONJoy
 
 // MARK: - Request for Swift JSON
 
@@ -54,4 +55,28 @@ extension Request {
     }
 }
 
+extension JSON {
+    func toCfUser() -> CfUser?{
+        var cfUser: CfUser?
+        do{
+            cfUser = try CfUser(JSONDecoder(self.rawData()))
+        }
+        catch let error as NSError {
+            print(error)
+        }
+        return cfUser
+    }
+    
+    //---------------  http api -----------------------------------
+    func respStatus() -> APIStatus{
+        let code = self[APIClient.RESP][APIClient.CODE].intValue
+        return APIStatus(rawValue: code)!
+    }
+    
+    func respMsg() -> String {
+        let msg = self[APIClient.RESP][APIClient.MSG].stringValue
+        return msg
+    }
+    
+}
 

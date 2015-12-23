@@ -19,7 +19,7 @@ class IBBSDetailHeaderView: UIView {
             headerTitleLabel.numberOfLines = 0
         }
     }
-    @IBOutlet weak var avatarImageView: IBBSAvatarImageView!
+    @IBOutlet weak var avatarImageView: CMAvatarImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var content: UITextView!

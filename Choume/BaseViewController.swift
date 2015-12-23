@@ -33,8 +33,6 @@ class BaseViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        // hide button by wyp
-        cornerActionButton?.hidden = true
     }
     
     override func viewDidAppear(animated: Bool) {

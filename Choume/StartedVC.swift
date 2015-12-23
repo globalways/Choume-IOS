@@ -3,28 +3,33 @@ import UIKit
 class StartedVC: BaseViewController {
     //project categories: started,involed,stared
     var type: ProjectCategory?
+    var navigationItemTitle: String?
     var tapGuesture: UITapGestureRecognizer?
+    var testData = Array<CfProject>()
     let MainStoryBoard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureTableView()
-        
-        
-//        UIBarButtonItem.appearance().tintColor = UIColor.whiteColor()
-//        let attr: NSMutableDictionary! = [NSForegroundColorAttributeName: UIColor.whiteColor()]
-//        UINavigationBar.appearance().titleTextAttributes = attr as? [String: AnyObject]
-//        manuallyConfigureTopBar(self, title: "ddd")
+        refreshData()
     }
 
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.navigationBar.barTintColor = theme.CMNavBGColor
-        self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: theme.CMWhite]
         self.navigationController?.navigationBar.translucent = false
+        
+        //hide right bar button item
+        //self.navigationItem.rightBarButtonItem?.enabled = false
+        //self.navigationItem.rightBarButtonItem?.tintColor = UIColor.clearColor()
+        self.navigationItem.rightBarButtonItem?.target = self
+        self.navigationItem.rightBarButtonItem?.action = "toNewProject:"
+        
+        // hide button by wyp
+        cornerActionButton?.hidden = true
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -42,16 +47,15 @@ class StartedVC: BaseViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(MainStoryboard.CellIdentifiers.cmProjectCell) as! CMProjectCell
-        //cell.textLabel?.text = "haha"
         cell.selectionStyle = UITableViewCellSelectionStyle.None
-        cell.projectNameLabel.text = "project name"
+        cell.projectNameLabel.text = testData[indexPath.section].title
         cell.projectNameLabel.userInteractionEnabled = true
-        cell.projectNameLabel.addGestureRecognizer(tapGuesture!)
+        //cell.projectNameLabel.addGestureRecognizer(tapGuesture!)
         cell.actionButton.setImage(UIImage(named: "Icon-Setting"), forState: UIControlState.Normal)
         cell.actionButton.setTitle("", forState: .Normal)
         cell.actionButton.addTarget(self, action: "tapActionButton:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.projectSubNameLabel.text = "project sub name"
-        cell.projectImage.image = UIImage(named: "gallery1")
+        cell.projectSubNameLabel.text = testData[indexPath.section].desc
+        cell.projectImage.image = UIImage(named: "img"+String(indexPath.section)+".jpg")
         
         if type == .Started {
             cell.actionButton.setImage(UIImage(named: "Icon-Setting"), forState: UIControlState.Normal)
@@ -67,13 +71,17 @@ class StartedVC: BaseViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var previewVC = MainStoryBoard.instantiateViewControllerWithIdentifier(MainStoryboard.VCIdentifiers.projectPreviewVC) as! ProjectPreviewViewController
-        previewVC.projectNameStr = "project " + String(indexPath.section)
+        let previewVC = MainStoryBoard.instantiateViewControllerWithIdentifier(MainStoryboard.VCIdentifiers.projectPreviewVC) as! ProjectPreviewViewController
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! CMProjectCell
+        previewVC.entity = testData[indexPath.section]
+        previewVC.projectImage = cell.projectImage.image
         self.navigationController?.pushViewController(previewVC, animated: true)
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 4
+
+        return testData.count
+  
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -82,7 +90,7 @@ class StartedVC: BaseViewController {
     
     func configureTableView() {
         //手势
-        tapGuesture = UITapGestureRecognizer(target: self, action: "tapProjectNameLabel:")
+        //tapGuesture = UITapGestureRecognizer(target: self, action: "tapProjectNameLabel:")
         //注册xib
         tableView.registerNib(UINib(nibName: MainStoryboard.NibIdentifiers.cmProjectCell, bundle: nil), forCellReuseIdentifier: MainStoryboard.CellIdentifiers.cmProjectCell)
         
@@ -97,6 +105,11 @@ class StartedVC: BaseViewController {
             self.navigationItem.title = "我的收藏"
             self.navigationItem.rightBarButtonItem?.title=""
         }
+        //从主界面查看项目列表
+        if type == .Default {
+            self.navigationItem.title = navigationItemTitle
+            self.navigationItem.rightBarButtonItem?.title=""
+        }
     }
     
     func tapActionButton(sender:UIButton){
@@ -108,20 +121,45 @@ class StartedVC: BaseViewController {
         self.type = type
     }
     
-    func sendRequest(page: Int) {
-        
+    func toNewProject(sender: UIBarButtonItem) {
+        let newProjectVC  = MainStoryBoard.instantiateViewControllerWithIdentifier(MainStoryboard.VCIdentifiers.cmNewProjectVC) as! CMNewProjectVC
+        self.navigationController?.pushViewController(newProjectVC, animated: true)
     }
     
-    /*
-    // MARK: - Navigation
+    
+    func sendRequest(page: Int) {
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        for index in 0...3 {
+            var p  = CfProject()
+            
+            switch index {
+            case 0:
+                p.title = "书房美物首篇·紫砂壶体验众筹"
+                p.desc = "人需要有点通灵的精神，而通灵需要美物来实现。东方文化中的器物审美，既是实用，又可传承。比如有一间书房，不必太豪华，只需一壶茶、两卷书，便可物我齐美。"
+                p.contact = "淇奥书房美物 "
+            case 1:
+                p.title = "极致之选—MECE真皮多功能手包"
+                p.desc = "MECE的创造者是2位活跃在日本时尚界多年，且对时尚的理解有深刻见解的年轻设计师。"
+                p.contact = "suanwa "
+            case 2:
+                p.title = "骑行台湾，不止于骑车！这只是一次跨越"
+                p.desc = "朱浩，武汉大学13级本科生，现在想去台湾骑行，除了想练习英语交流，感受文化，也想拜访一些大学及其帆船队；同时为以后环游世界准备，希望实现"
+                p.contact = "朱浩"
+                p.fundTime = 342421322
+            case 3:
+                p.title = "做一件温暖的鹅绒服"
+                p.desc = "我要给未曾谋面的朋友做出soul mate一样的、温暖的、高质量羽绒服，在写字楼、在公交车、在地铁、在雾霾里，努力为每一位池步的穿着者打开城市的天窗。"
+                p.contact = "池步王冰 "
+                p.fundTime = 342421322
+            default: break
+            }
+            
+            let m: CfProject = p
+            testData.append(m)
+            
+        }
+        
     }
-    */
-
 }
 
 extension StartedVC {

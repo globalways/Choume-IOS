@@ -15,7 +15,7 @@ import SwiftyJSON
 
 
 class IBBSMessageTableViewCell: UITableViewCell {
-    @IBOutlet var avatarImageView: IBBSAvatarImageView!
+    @IBOutlet var avatarImageView: CMAvatarImageView!
     @IBOutlet var isMessageRead: UIImageView!
     @IBOutlet var timeLabel: UILabel!
     @IBOutlet var contentLabel: UILabel!

@@ -1,11 +1,3 @@
-//
-//  CMProjectCell.swift
-//  iBBS
-//
-//  Created by 汪阳坪 on 15/11/24.
-//  Copyright © 2015年 iAugus. All rights reserved.
-//
-
 import UIKit
 
 class CMProjectCell: UITableViewCell {
@@ -15,7 +7,14 @@ class CMProjectCell: UITableViewCell {
     @IBOutlet weak var projectImage: UIImageView!
     @IBOutlet weak var projectSubNameLabel: UILabel!
     @IBOutlet weak var projectProgress: UIProgressView!
-    @IBOutlet weak var projectUserAvatar: UIImageView!
+    @IBOutlet weak var projectUserAvatar: CMAvatarImageView! {
+        didSet{
+            projectUserAvatar.backgroundColor = theme.CMNavBGColor.darkerColor(0.75)
+            projectUserAvatar.image = AVATAR_PLACEHOLDER_IMAGE
+            
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         projectProgress.progressTintColor = theme.CMNavBGColor

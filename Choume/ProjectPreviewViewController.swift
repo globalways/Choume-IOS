@@ -13,7 +13,8 @@ public let SD_RefreshImage_Width: CGFloat = 35
 
 class ProjectPreviewViewController: UIViewController, DoubleTextViewDelegate {
 
-    var projectNameStr: String?
+    var projectImage: UIImage?
+    var entity: CfProject?
     private var fourImageLabelView: FourImageLabelView!
     private var bottomScrollView: UIScrollView!
     private var doubleTextView: DoubleTextView!
@@ -30,22 +31,18 @@ class ProjectPreviewViewController: UIViewController, DoubleTextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        projectProgressBar.progressTintColor = theme.CMNavBGColor
+        projectName.text = entity?.title
+        projectDesc.text = entity?.desc
+        previewImage.image = projectImage
         
-        
-       
-        
-        
-        
-        projectName.text = projectNameStr
-        
+        configureViews()
         setHorizontalViews()
-        
         setScrollViewNav()
         setScrollView()
         setdayTableView()
         setalbumTableView()
-        navigationItem.title = projectNameStr
-        
+//        navigationItem.title = entity?.title
         dayTableView.reloadData()
         albumTableView.reloadData()
     }
@@ -54,10 +51,26 @@ class ProjectPreviewViewController: UIViewController, DoubleTextViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    override func viewWillAppear(animated: Bool) {
+        
+    }
+    
     override func viewDidAppear(animated: Bool) {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.translucent = true
+    }
+    
+    func configureViews() {
+        let moreLabelTapGusture = UITapGestureRecognizer(target: self, action: "tapMore:")
+        projectMore.userInteractionEnabled = true
+        projectMore.addGestureRecognizer(moreLabelTapGusture)
+    }
+    
+    func tapMore(sender: UITapGestureRecognizer) {
+        let tapAlert = CMAlertController(title: "", message: "没有更多!", preferredStyle: UIAlertControllerStyle.Alert)
+        tapAlert.addAction(UIAlertAction(title: "确定", style: .Destructive, handler: nil))
+        self.presentViewController(tapAlert, animated: true, completion: nil)
     }
     
     func setHorizontalViews() {
@@ -67,7 +80,7 @@ class ProjectPreviewViewController: UIViewController, DoubleTextViewDelegate {
         fourImageLabelView.frame = CGRectMake(0, 300, self.view.width, 50)
         view.addSubview(fourImageLabelView)
         let divider2: UIView = UIView()
-        divider2.frame = CGRectMake(0, 360, AppWidth, 9)
+        divider2.frame = CGRectMake(0, 380, AppWidth, 9)
         divider2.backgroundColor = theme.CMGrayLight
         view.addSubview(divider2)
         
@@ -75,15 +88,15 @@ class ProjectPreviewViewController: UIViewController, DoubleTextViewDelegate {
     
     private func setScrollViewNav() {
         doubleTextView = DoubleTextView(leftText: "参  与", rigthText: "评  论", centerText: "支持者");
-        doubleTextView.frame = CGRectMake(0, 370, self.view.width, 44)
+        doubleTextView.frame = CGRectMake(0, 390, self.view.width, 44)
         doubleTextView.delegate = self
         view.addSubview(doubleTextView)
     }
     
     private func setScrollView() {
         self.automaticallyAdjustsScrollViewInsets = false
-        bottomScrollView = UIScrollView(frame: CGRectMake(0, 414, AppWidth, AppHeight - 414))
-        bottomScrollView.backgroundColor = theme.SDBackgroundColor
+        bottomScrollView = UIScrollView(frame: CGRectMake(0, 434, AppWidth, AppHeight - 434))
+        bottomScrollView.backgroundColor = theme.CMVCBackgroundColor
         bottomScrollView.contentSize = CGSizeMake(AppWidth * 2.0, 0)
         bottomScrollView.showsHorizontalScrollIndicator = false
         bottomScrollView.showsVerticalScrollIndicator = false

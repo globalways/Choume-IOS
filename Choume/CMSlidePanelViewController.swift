@@ -6,16 +6,16 @@ protocol ToggleLeftPanelDelegate{
     func removeFrontBlurView()
 }
 
-class SlidePanelViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
+class SlidePanelViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CMSlidePanelNoLoginDelegate {
     
     @IBOutlet weak var userNameLabel: UILabel!{
         didSet{
             self.configureUserInfoView(userNameLabel)
         }
     }
-    @IBOutlet weak var userProfileImage: IBBSAvatarImageView!{
+    @IBOutlet weak var userProfileImage: CMAvatarImageView!{
         didSet{
-            userProfileImage.backgroundColor = CUSTOM_THEME_COLOR.darkerColor(0.75)
+            userProfileImage.backgroundColor = theme.CMNavBGColor.darkerColor(0.75)
             userProfileImage.image = AVATAR_PLACEHOLDER_IMAGE
             self.configureLoginAndLogoutView(userProfileImage)
             
@@ -24,14 +24,27 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
     var delegate: ToggleLeftPanelDelegate!
     private let cellTitleArray = ["我的发起", "我的参与", "我的收藏", "我的财富","我的消息","账户设置","登出账户"]
     private let cellTitleImage = ["Icon-Cloud","Icon-People","Icon-Star","Icon-Card","Icon-Msg","Icon-Setting","Icon-Out"]
+    private var loginedViews: [UIView] = []
+    private var noLoginView: CMSlidePanelNoLogin!
+    
     private var blurView: UIView!
     private var themePickerView: UIView!
     private var themePickerBar: FrostedSidebar!
     @IBOutlet weak var tableView: UITableView!
+    let slidePanelStoryboard = UIStoryboard(name: "IBBSSlidePanel", bundle: NSBundle.mainBundle())
     
     override func loadView() {
         super.loadView()
+        
+        loginedViews = view.subviews
+        noLoginView = CMSlidePanelNoLogin.instanceFromNib() as! CMSlidePanelNoLogin
+        noLoginView.frame = CGRectMake(0, 0, kExpandedOffSet, AppHeight)
+        noLoginView.delegate = self
+        if CMContext.currentUser == nil {
+            showNoLoginView()
+        }
         userNameLabel.text = "小明"
+        
         //by wyp
 //        self.view.backgroundColor = UIColor(patternImage: BACKGROUNDER_IMAGE!)
         self.view.backgroundColor = UIColor.whiteColor()
@@ -44,15 +57,16 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.backgroundColor = UIColor.clearColor()
         tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.scrollEnabled = false
-        CMContext.sharedInstance.configureCurrentUserAvatar(self.userProfileImage)
         
         NSNotificationCenter.defaultCenter().postNotificationName(kShouldHideCornerActionButton, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
+        CMContext.sharedInstance.configureCurrentUserAvatar(self.userProfileImage, label: self.userNameLabel)
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().postNotificationName(kShouldHideCornerActionButton, object: nil)
     }
@@ -78,6 +92,75 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    func showNoLoginView() {
+        for var i=0;i<loginedViews.count;i++ {
+            loginedViews[i].hidden = true
+        }
+        view.addSubview(noLoginView)
+    }
+    
+    func hideNoLoginView() {
+        noLoginView.hidden = true
+        for var i=0;i<loginedViews.count;i++ {
+            loginedViews[i].hidden = false
+        }
+    }
+    
+    //未登陆界面view被点击了
+    func nologinView(noLoginView: CMSlidePanelNoLogin, didTapView sender: UITapGestureRecognizer) {
+        switch sender.view?.tag {
+        case noLoginView.LOGINTAP?:
+            toLogin()
+            break
+        case noLoginView.HELPTAP?:
+            print("help")
+            break
+        case noLoginView.REGISTERTAP?:
+            toRegister()
+            break
+        default:break
+        }
+    }
+    
+    func toLogin() {
+        self.delegate?.toggleLeftPanel()
+        CMContext.sharedInstance.login(cancelled: {
+            self.delegate?.removeFrontBlurView()
+            }, completion: {
+                self.hideNoLoginView()
+                CMContext.sharedInstance.configureCurrentUserAvatar(self.userProfileImage, label: self.userNameLabel)
+                self.delegate?.removeFrontBlurView()
+                //                NSNotificationCenter.defaultCenter().postNotificationName(kShouldReloadDataAfterPosting, object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(kJustLoggedinNotification, object: nil)
+        })
+    }
+    
+    func toLogout() {
+        CMContext.sharedInstance.logout(completion: {
+            self.userProfileImage.image = AVATAR_PLACEHOLDER_IMAGE
+            self.showNoLoginView()
+        })
+    }
+    
+    func toRegister() {
+        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("iBBSRegisterViewController") as! CMRegisterViewController
+        
+        //            UIView.animateWithDuration(0.75, animations: { () -> Void in
+        //                UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
+        //                self.navigationController?.pushViewController(vc, animated: true)
+        //                UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromRight, forView: self.navigationController!.view, cache: false)
+        //            })
+        self.navigationController?.pushViewController(vc, animated: true)
+        self.delegate?.toggleLeftPanel()
+        
+        // after pushing view controller, remove the blur view
+        let delayInSeconds: Double = 1
+        let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * delayInSeconds))
+        dispatch_after(popTime, dispatch_get_main_queue(), {
+            self.delegate?.removeFrontBlurView()
+        })
+    }
+    
     // MARK: - configure user info by wyp
     func configureUserInfoView(sender: UILabel) {
         let tapUser = UITapGestureRecognizer(target: self, action: "showUserInfo:")
@@ -93,12 +176,8 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
         //self.navigationController?.pushViewController(userInfoVC, animated: true)
     }
     
-    @IBAction func cancelUserInfo(segue: UIStoryboardSegue) {
-        
-    }
-    @IBAction func saveUserInfo(segue: UIStoryboardSegue) {
-        
-    }
+    @IBAction func cancelUserInfo(segue: UIStoryboardSegue) {}
+    @IBAction func saveUserInfo(segue: UIStoryboardSegue) {}
     
     // MARK: - configure login and register
     func configureLoginAndLogoutView(sender: UIImageView){
@@ -115,7 +194,10 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
             if CMContext.sharedInstance.getLoginData() == nil {
                 // login or register
                 self.alertToChooseLoginOrRegister()
-            }else{
+            }
+            //不主动验证token by wyp
+            //else
+            if false {
                 CMContext.sharedInstance.isTokenLegal({ (isTokenLegal) -> Void in
                     if isTokenLegal {
                         // do logout
@@ -130,7 +212,7 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
                             CMContext.sharedInstance.login(cancelled: {
                                 self.delegate?.removeFrontBlurView()
                                 }, completion: {
-                                    CMContext.sharedInstance.configureCurrentUserAvatar(self.userProfileImage)
+                                    CMContext.sharedInstance.configureCurrentUserAvatar(self.userProfileImage, label: self.userNameLabel)
                                     self.delegate?.removeFrontBlurView()
 //                                    NSNotificationCenter.defaultCenter().postNotificationName(kShouldReloadDataAfterPosting, object: nil)
                             })
@@ -153,40 +235,13 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func alertToChooseLoginOrRegister(){
-        let alertCtrl = UIAlertController(title: "", message: REGISTER_OR_LOGIN, preferredStyle: .Alert)
+        let alertCtrl = CMAlertController(title: "", message: REGISTER_OR_LOGIN, preferredStyle: .Alert)
         let loginAction = UIAlertAction(title: BUTTON_LOGIN, style: .Default) { (_) -> Void in
             // login
-            
-            self.delegate?.toggleLeftPanel()
-            CMContext.sharedInstance.login(cancelled: {
-                self.delegate?.removeFrontBlurView()
-                }, completion: {
-                CMContext.sharedInstance.configureCurrentUserAvatar(self.userProfileImage)
-                self.delegate?.removeFrontBlurView()
-//                NSNotificationCenter.defaultCenter().postNotificationName(kShouldReloadDataAfterPosting, object: nil)
-                NSNotificationCenter.defaultCenter().postNotificationName(kJustLoggedinNotification, object: nil)
-            })
-            
+            self.toLogin()
         }
         let registerAction = UIAlertAction(title: BUTTON_REGISTER, style: .Default) { (_) -> Void in
-            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("iBBSRegisterViewController") as! CMRegisterViewController
-            
-            //            UIView.animateWithDuration(0.75, animations: { () -> Void in
-            //                UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
-            //                self.navigationController?.pushViewController(vc, animated: true)
-            //                UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromRight, forView: self.navigationController!.view, cache: false)
-            //            })
-            self.navigationController?.pushViewController(vc, animated: true)
-            self.delegate?.toggleLeftPanel()
-            
-            // after pushing view controller, remove the blur view
-            let delayInSeconds: Double = 1
-            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * delayInSeconds))
-            dispatch_after(popTime, dispatch_get_main_queue(), {
-                self.delegate?.removeFrontBlurView()
-            })
-            
-            
+            self.toRegister()
         }
         alertCtrl.addAction(loginAction)
         alertCtrl.addAction(registerAction)
@@ -289,33 +344,39 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
     
     // MARK: - table view delegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-
-        let slidePanelStoryboard = UIStoryboard(name: "IBBSSlidePanel", bundle: NSBundle.mainBundle())
         var destinationVC: UIViewController!
         switch indexPath.row {
         //0 1 2 我的发起，我的参与 我的收藏
         case 0:
-            let destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.startedNav) as! UserProjectNavViewController
-            destinationVC.setType(ProjectCategory.Started)
+            let destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.startedNav) as! ProjectListNavViewController
+            destinationVC.setType(ProjectCategory.Started,title: "")
             self.navigationController?.showViewController(destinationVC, sender: nil)
             return
         case 1:
-            let destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.startedNav) as! UserProjectNavViewController
-            destinationVC.setType(ProjectCategory.Involved)
+            let destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.startedNav) as! ProjectListNavViewController
+            destinationVC.setType(ProjectCategory.Involved,title: "")
             self.navigationController?.showViewController(destinationVC, sender: nil)
             return
         case 2:
-            let destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.startedNav) as! UserProjectNavViewController
-            destinationVC.setType(ProjectCategory.Stared)
+            let destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.startedNav) as! ProjectListNavViewController
+            destinationVC.setType(ProjectCategory.Stared,title: "")
             self.navigationController?.showViewController(destinationVC, sender: nil)
             return
         case 3:
             destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.walletNav)
             self.navigationController?.showViewController(destinationVC, sender: nil)
             return
-        case 4:
-            destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier("startedProjectNavVC")
+        case 5:
+            destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.settingNav)
+            self.navigationController?.showViewController(destinationVC, sender: nil)
+            return
+        case 6:
+            toLogout()
+            return
         default:
+            let canNotUseAlert = CMAlertController(title: "", message: "暂未开放！", preferredStyle:.Alert)
+            canNotUseAlert.addAction(UIAlertAction(title: "确定", style: .Destructive, handler: nil))
+            self.presentViewController(canNotUseAlert, animated: true, completion: nil)
             return
         }
         

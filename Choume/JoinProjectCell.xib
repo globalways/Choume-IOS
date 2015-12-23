@@ -14,10 +14,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="67.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n9H-VQ-Wqf">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n9H-VQ-Wqf">
                         <rect key="frame" x="15" y="15" width="42" height="20.5"/>
                         <animations/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20.5" id="lYB-tU-BbX"/>
+                            <constraint firstAttribute="width" constant="42" id="s5M-ky-HTl"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -29,10 +33,10 @@
                 </subviews>
                 <animations/>
                 <constraints>
+                    <constraint firstItem="n9H-VQ-Wqf" firstAttribute="top" secondItem="BOu-Up-ehZ" secondAttribute="top" constant="15" id="LTT-bV-wDc"/>
                     <constraint firstAttribute="trailing" secondItem="dpe-jP-8fR" secondAttribute="trailing" constant="15" id="VTi-ed-ADP"/>
                     <constraint firstItem="dpe-jP-8fR" firstAttribute="top" secondItem="BOu-Up-ehZ" secondAttribute="top" constant="15" id="ZEG-oa-43j"/>
-                    <constraint firstItem="n9H-VQ-Wqf" firstAttribute="leading" secondItem="BOu-Up-ehZ" secondAttribute="leading" constant="15" id="dAh-Py-BR3"/>
-                    <constraint firstItem="n9H-VQ-Wqf" firstAttribute="top" secondItem="BOu-Up-ehZ" secondAttribute="top" constant="15" id="ky5-hA-jiS"/>
+                    <constraint firstItem="n9H-VQ-Wqf" firstAttribute="leading" secondItem="BOu-Up-ehZ" secondAttribute="leading" constant="15" id="xMw-w8-GTv"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>

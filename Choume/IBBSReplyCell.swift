@@ -15,7 +15,7 @@ import SwiftyJSON
 
 class IBBSReplyCell: UITableViewCell {
     
-    @IBOutlet weak var avatarImageView: IBBSAvatarImageView!
+    @IBOutlet weak var avatarImageView: CMAvatarImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var replyContent: UITextView!
     

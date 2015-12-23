@@ -1,17 +1,3 @@
-//
-//  AppDelegate.swift
-//  iBBS
-//
-//  Created by Augus on 9/1/15.
-//
-//  http://iAugus.com
-//  https://github.com/iAugux
-//
-//  Copyright © 2015 iAugus. All rights reserved.
-//
-
-
-
 import UIKit
 
 @UIApplicationMain
@@ -22,7 +8,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var containerViewController:  ContainerViewController!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
     
         // SlideMenu
         application.statusBarStyle = .LightContent
@@ -36,18 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Settings
         
         if isIphone3_5Inch {
-            SHOULD_HIDE_NAVIGATIONBAR = true
+            SHOULD_HIDE_NAVIGATIONBAR = false
         }
         
-//        SHOULD_HIDE_NAVIGATIONBAR = true
-        
-        
-    
-        // by wyp
-//        UINavigationBar.appearance().barTintColor = theme.CMNavBGColor
-//        UIBarButtonItem.appearance().tintColor = UIColor.whiteColor()
-//        let attr: NSMutableDictionary! = [NSForegroundColorAttributeName: UIColor.whiteColor()]
-//        UINavigationBar.appearance().titleTextAttributes = attr as? [String: AnyObject]
+        //SHOULD_HIDE_NAVIGATIONBAR = true
         
         // Set Theme
         //清除设置的主题 by wyp
@@ -64,14 +41,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "setWindowColor", name: kThemeDidChangeNotification, object: nil)
-        
+        tryToLoadUserInfo()
         return true
     }
     
     func setWindowColor(){
         self.window?.tintColor = CUSTOM_THEME_COLOR
         self.window?.backgroundColor = CUSTOM_THEME_COLOR.lighterColor(0.6)
-
+    }
+    
+    func tryToLoadUserInfo(){
+        if let json = CMContext.sharedInstance.getLoginData() {
+            print("load local user data:\(json)")
+            CMContext.currentUser = json.toCfUser()
+        }
     }
     
     // disable orientation for messages view controller
@@ -84,27 +67,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UIInterfaceOrientationMask.All
     }
     
-    func applicationWillResignActive(application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    }
+    func applicationWillResignActive(application: UIApplication) {}
     
-    func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    }
+    func applicationDidEnterBackground(application: UIApplication) {}
     
-    func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    }
+    func applicationWillEnterForeground(application: UIApplication) {}
     
-    func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    }
+    func applicationDidBecomeActive(application: UIApplication) {}
     
-    func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
+    func applicationWillTerminate(application: UIApplication) {}
     
     
 }

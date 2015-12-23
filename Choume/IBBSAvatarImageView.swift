@@ -1,14 +1,6 @@
-//
-//  IBBSAvatarImageView.swift
-//  iBBS
-//
-//  Created by Augus on 11/3/15.
-//  Copyright © 2015 iAugus. All rights reserved.
-//
-
 import Foundation
 
-class IBBSAvatarImageView: UIImageView {
+class CMAvatarImageView: UIImageView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -18,4 +10,5 @@ class IBBSAvatarImageView: UIImageView {
         self.layer.cornerRadius  = self.frame.width / 2.0
         self.backgroundColor     = UIColor.randomColor()
     }
+    
 }

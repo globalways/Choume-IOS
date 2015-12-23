@@ -4,7 +4,7 @@ import Kingfisher
 
 class CMTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var userProfireImage: IBBSAvatarImageView!
+    @IBOutlet weak var userProfireImage: CMAvatarImageView!
     @IBOutlet weak var topicLabel: UILabel!
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var nodeName: UILabel!

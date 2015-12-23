@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "APIClient.updateAppUser(String, cfUser : CfUser, success : (JSON) -&gt; (), failure : (NSError) -&gt; ()) -&gt; ():CMAPIClient.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "cfUser">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMWalletRechargeVC.viewDidLoad() -&gt; ():CMWalletRechargeVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "moneyCell">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "StartedVC.numberOfSectionsInTableView(UITableView) -&gt; Int:StartedVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "testData">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "StartedVC.sendRequest(Int) -&gt; ():StartedVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "testData[0]">
+            </PersistentString>
+            <PersistentString
+               value = "testData.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMNewProjectVC.viewDidLoad() -&gt; ():CMNewProjectVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "AppWidth">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMNewProjectVC.nextStepPressed(UIButton) -&gt; ():CMNewProjectVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "newProject">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMProjectRewardDetailVC.setEditing(Bool, animated : Bool) -&gt; ():CMProjectRewardDetailVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentReward">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMRegisterViewController.(signupButton(CMRegisterViewController) -&gt; (AnyObject) -&gt; ()).(closure #1):CMRegisterViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tmpJson.rawData()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "APIClient.(uploadImage(APIClient) -&gt; (String, imageDatas : [NSData], success : ([String]) -&gt; (), failure : (NSError) -&gt; ()) -&gt; ()).(closure #1).(closure #1):CMAPIClient.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "info.error">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMContext.getToken() -&gt; String?:CMContext.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "userDefaults.objectForKey(kLoginFeedbackJsonToken)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMMainViewController.viewDidLoad() -&gt; ():CMMainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "newWidth">
+            </PersistentString>
+            <PersistentString
+               value = "(image1.height/image1.width)*newWidth">
+            </PersistentString>
+            <PersistentString
+               value = "image1.frame.height">
+            </PersistentString>
+            <PersistentString
+               value = "image1.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "StartedVC.tableView(UITableView, cellForRowAtIndexPath : NSIndexPath) -&gt; UITableViewCell:StartedVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "testData">
+            </PersistentString>
+            <PersistentString
+               value = "testData[indexPath.row].title">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMFieldEditVC.saveData() -&gt; ():CMFieldEditVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "CMContext.sharedInstance.getToken()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CfUser.init(JSONDecoder) -&gt; CfUser:CMEntity.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "decoder">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

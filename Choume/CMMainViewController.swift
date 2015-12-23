@@ -1,16 +1,26 @@
 import UIKit
 
-class CMMainViewController: UIViewController, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class CMMainViewController: UIViewController, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDelegate {
 
     @IBOutlet weak var toLeftPanel: UIBarButtonItem!
     @IBOutlet weak var galleryScrollView: UIScrollView!
     @IBOutlet weak var galleryPageControl: UIPageControl!
     
+    @IBOutlet weak var contentContainerScrollView: UIScrollView!
+    @IBOutlet weak var scrollContentView: UIView!
     @IBOutlet weak var firstCollectionView: UICollectionView!
     @IBOutlet weak var secondCollectionView: UICollectionView!
     
+    @IBOutlet weak var image2: UIImageView!
+    @IBOutlet weak var image1: UIImageView!
     var timer: NSTimer!
     var containerVC: ContainerViewController!
+    
+    let slidePanelStoryboard = UIStoryboard(name: "IBBSSlidePanel", bundle: NSBundle.mainBundle())
+    let firstScrollViewCellNames: [String] = ["筹乐子","筹票子","筹爱心"]
+    let firstScrollViewCellImage:[String] = ["Icon-lezi","Icon-piaozi","Icon-aixin"]
+    let secondScrollViewCellNames: [String] = ["一元秒筹","限时特筹","世纪难题","周末去哪","热门众筹","非筹不可"]
+    let secondScrollViewCellImage: [String] = ["Icon-main-s2-0","Icon-main-s2-1","Icon-main-s2-2","Icon-main-s2-3","Icon-main-s2-4","Icon-main-s2-5"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +30,20 @@ class CMMainViewController: UIViewController, UIScrollViewDelegate, UICollection
         if self.parentViewController != nil {
           containerVC = self.parentViewController?.parentViewController as! ContainerViewController
         }
+        contentContainerScrollView.contentSize = scrollContentView.frame.size
         setCollectionViews()
+        
+        let newWidth = (AppWidth - 50)/2
+        let newHeight = CGFloat(66.0/154.0) * newWidth
+        
+        image1.addConstraint(NSLayoutConstraint(item: image1, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: newHeight))
+        
+        image1.addConstraint(NSLayoutConstraint(item: image1, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: newWidth))
+        
+        image2.addConstraint(NSLayoutConstraint(item: image2, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: newHeight))
+        
+        image2.addConstraint(NSLayoutConstraint(item: image2, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: newWidth))
+        
     }
     func toLeftPanelItemSelected(){
         containerVC.toggleLeftPanel()
@@ -47,7 +70,7 @@ class CMMainViewController: UIViewController, UIScrollViewDelegate, UICollection
     }
     
     func pictureGallery() {
-        let imageW: CGFloat = self.galleryScrollView.frame.size.width
+        let imageW: CGFloat = AppWidth
         let imageH: CGFloat = self.galleryScrollView.frame.size.height
         var imageY: CGFloat = 0
         var totalCount: NSInteger = 3
@@ -57,6 +80,7 @@ class CMMainViewController: UIViewController, UIScrollViewDelegate, UICollection
             imageView.frame = CGRectMake(imageX, imageY, imageW, imageH)
             let name: String = String(format: "gallery%d", index+1)
             imageView.image = UIImage(named: name)
+//            imageView.contentMode = .ScaleAspectFill
             self.galleryScrollView.showsHorizontalScrollIndicator = false
             self.galleryScrollView.addSubview(imageView)
         }
@@ -69,6 +93,18 @@ class CMMainViewController: UIViewController, UIScrollViewDelegate, UICollection
         self.addTimer()
     }
     
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+        
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
     func nextImage(sender:AnyObject!) {
         var page: Int = self.galleryPageControl.currentPage
         if(page == 2){
@@ -76,7 +112,6 @@ class CMMainViewController: UIViewController, UIScrollViewDelegate, UICollection
         }else{
             page++
         }
-        
         let x: CGFloat = CGFloat(page) * self.galleryScrollView.frame.size.width
         self.galleryScrollView.contentOffset = CGPointMake(x, 0)
         
@@ -87,25 +122,28 @@ class CMMainViewController: UIViewController, UIScrollViewDelegate, UICollection
         let x: CGFloat = galleryScrollView.contentOffset.x
         let page:Int = (Int)((x + scrollViewW / 2) / scrollViewW);
         self.galleryPageControl.currentPage = page;
+        resetTimer()
+    }
+    func resetTimer() {
+        self.timer.invalidate()
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: "nextImage:", userInfo: nil, repeats: true)
     }
     func addTimer() {
         self.timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: "nextImage:", userInfo: nil, repeats: true)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension CMMainViewController {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(MainStoryboard.CellIdentifiers.imageLabelViewCell, forIndexPath: indexPath) as! ImageLabelViewCell
+        if collectionView == firstCollectionView {
+            cell.image.image = UIImage(named: firstScrollViewCellImage[indexPath.row])
+            cell.label.text = firstScrollViewCellNames[indexPath.row]
+        }else {
+            cell.image.image = UIImage(named: secondScrollViewCellImage[indexPath.item + indexPath.section*3])
+            cell.label.text = secondScrollViewCellNames[indexPath.item + indexPath.section*3]
+        }
+        
         return cell
     }
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -117,4 +155,15 @@ extension CMMainViewController {
         }
         return 1
     }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.startedNav) as! ProjectListNavViewController
+        
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ImageLabelViewCell
+        destinationVC.setType(.Default,title: cell.label.text!)
+        self.navigationController?.showViewController(destinationVC, sender: nil)
+
+    }
+    
+    @IBAction func cancelToSlidePanel(segue: UIStoryboardSegue){}
 }

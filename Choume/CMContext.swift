@@ -1,13 +1,6 @@
-//  Created by Augus on 9/15/15.
-//
-//  http://iAugus.com
-//  https://github.com/iAugux
-//
-//  Copyright © 2015 iAugus. All rights reserved.
-//
-
 import UIKit
 import SwiftyJSON
+import JSONJoy
 
 class CMContext {
     static let sharedInstance = CMContext()
@@ -16,7 +9,9 @@ class CMContext {
     
     private let kNodesId = "kNodes"
     private let kLoginFeedbackJson = "kLoginFeedbackJson"
+    private let kLoginFeedbackJsonToken = "kLoginFeedbackJsonToken"
 
+    static var currentUser: CfUser?
     
     func isTokenLegal(completionHandler: ((isTokenLegal: Bool) -> Void)) {
 
@@ -48,7 +43,7 @@ class CMContext {
     func login(cancelled cancelled: (() -> Void)?, completion: (() -> Void)?) {
         var username, password: UITextField!
       
-        let alertVC = UIAlertController(title: BUTTON_LOGIN, message: INSERT_UID_AND_PASSWD, preferredStyle: .Alert)
+        let alertVC = CMAlertController(title: BUTTON_LOGIN, message: INSERT_UID_AND_PASSWD, preferredStyle: .Alert)
         
         alertVC.addTextFieldWithConfigurationHandler { (textField: UITextField) -> Void in
             textField.placeholder = HOLDER_USERNAME
@@ -63,12 +58,14 @@ class CMContext {
         
         let okAction = UIAlertAction(title: BUTTON_OK, style: .Default) { (action: UIAlertAction) -> Void in
             let encryptedPasswd = password.text?.MD5()
-            APIClient.sharedInstance.userLogin(username.text!, passwd: encryptedPasswd!, success: { (json) -> Void in
+            let token = CMContext.sharedInstance.getToken()
+            APIClient.sharedInstance.userLogin(token,userID: username.text!, passwd: encryptedPasswd!, success: { (json) -> Void in
                 print(json)
                 // something wrong , alert!!
-                if json["code"].intValue == 0 {
-                    let msg = json["msg"].stringValue
-                    let alert = UIAlertController(title: ERROR_MESSAGE, message: msg, preferredStyle: UIAlertControllerStyle.Alert)
+                let code = json[APIClient.RESP][APIClient.CODE].intValue
+                if APIStatus(rawValue: code) != .OK {
+                    let description = APIStatus(rawValue: code)?.description()
+                    let alert = CMAlertController(title: ERROR_MESSAGE, message: description, preferredStyle: UIAlertControllerStyle.Alert)
                     let cancelAction = UIAlertAction(title: TRY_AGAIN, style: .Cancel, handler: { (_) -> Void in
                         self.login(cancelled: nil, completion: nil)
                         alertVC.dismissViewControllerAnimated(true , completion: nil)
@@ -77,8 +74,14 @@ class CMContext {
                     alert.addAction(cancelAction)
                     UIApplication.topMostViewController()?.presentViewController(alert, animated: true, completion: nil)
                 }else{
-                    // success , keep token and other info
-                    CMContext.sharedInstance.saveLoginData(json.object)
+                    // 保存信息到本地
+                    CMContext.sharedInstance.saveLoginData(json[APIClient.cfUser].object)
+                    CMContext.sharedInstance.saveToken(json[APIClient.TOKEN].object)
+                    // 保存用户对象
+                    if let cfUser = json[APIClient.cfUser].toCfUser() {
+                        CMContext.currentUser = cfUser
+                    }
+                    
                     if let completionHandler = completion {
                         completionHandler()
                     }
@@ -104,7 +107,11 @@ class CMContext {
 
     func logout(completion completion: (() -> Void)?){
         
-        let alertController = UIAlertController(title: "", message: SURE_TO_LOGOUT, preferredStyle: .Alert)
+        self.saveLoginData("")
+        self.saveToken("")
+        CMContext.currentUser = nil
+        
+        let alertController = CMAlertController(title: "", message: SURE_TO_LOGOUT, preferredStyle: .Alert)
         let cancelAction = UIAlertAction(title: BUTTON_CANCEL, style: .Default, handler: nil)
         let okAction = UIAlertAction(title: BUTTON_OK, style: .Default) { (_) -> Void in
             
@@ -129,6 +136,13 @@ class CMContext {
         userDefaults.synchronize()
     }
     
+    func saveToken(data: AnyObject) {
+        print("save token:----\(data)-----")
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setObject(NSKeyedArchiver.archivedDataWithRootObject(data), forKey: kLoginFeedbackJsonToken)
+        userDefaults.synchronize()
+    }
+    
     func getLoginData() -> JSON? {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         if let data = userDefaults.objectForKey(kLoginFeedbackJson) {
@@ -136,6 +150,15 @@ class CMContext {
             return JSON(json!)
         }
         
+        return nil
+    }
+    
+    func getToken() -> String? {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if let data = userDefaults.objectForKey(kLoginFeedbackJsonToken) {
+            let token = NSKeyedUnarchiver.unarchiveObjectWithData(data as! NSData)
+            return String(token!)
+        }
         return nil
     }
     
@@ -156,18 +179,27 @@ class CMContext {
         return nil
     }
     
-    func configureCurrentUserAvatar(imageView: UIImageView){
-        let data = CMContext.sharedInstance.getLoginData()
-        if let json = data {
-            let avatar = json["avatar"].stringValue
-            if avatar.utf16.count == 0 {
+    func configureCurrentUserAvatar(imageView: UIImageView, label: UILabel){
+        if let cfUser = CMContext.currentUser {
+            let avatar = cfUser.user?.avatar
+            //if avatar!.utf16.count == 0 {
+            if avatar == nil {
                 print("there is no avatar, set a image holder")
                 imageView.image = AVATAR_PLACEHOLDER_ADMIN_IMAGE
             }else{
-                if let url = NSURL(string: avatar as String) {
+                if let url = NSURL(string: avatar! as String) {
                     imageView.kf_setImageWithURL(url, placeholderImage: AVATAR_PLACEHOLDER_ADMIN_IMAGE)
                 }
             }
+            
+            if let username = cfUser.user?.nick{
+                if username.utf16.count != 0 {
+                    label.text = username
+                }else{
+                    label.text = ""
+                }
+            }
+            
         }
     }
     

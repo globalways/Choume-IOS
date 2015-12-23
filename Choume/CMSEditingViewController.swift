@@ -7,11 +7,12 @@ var whoCalledEditingViewController: Int! = -1
 
 class CMEditingViewController: UIViewController, UITextViewDelegate {
     
-    @IBOutlet var avatarImageView: IBBSAvatarImageView!{
+    @IBOutlet var avatarImageView: CMAvatarImageView!{
         didSet{
            
             avatarImageView.backgroundColor = CUSTOM_THEME_COLOR.darkerColor(0.75)
-            CMContext.sharedInstance.configureCurrentUserAvatar(avatarImageView)
+            //不会用到的类 by wyp
+            //CMContext.sharedInstance.configureCurrentUserAvatar(avatarImageView,label: nil)
         }
     }
     @IBOutlet var nodesPickerView: UIPickerView!{

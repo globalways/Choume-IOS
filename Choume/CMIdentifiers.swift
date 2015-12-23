@@ -16,6 +16,10 @@ struct MainStoryboard {
         static let nodeVC                      = "iBBSNodeViewController"
         //by wyp
         static let projectPreviewVC            = "projectPreviewVC"
+        static let cmHelpDetailVC              = "cmHelpDetailVC"
+        static let cmNewProjectVC              = "cmNewProjectVC"
+        static let cmProjectReturnDetailVC     = "cmProjectReturnDetailVC"
+
     }
 
     struct CellIdentifiers {
@@ -28,6 +32,8 @@ struct MainStoryboard {
         static let cmProjectCell               = "cmProjectCell"
         static let joinProjectCell             = "joinProjectCell"
         static let imageLabelViewCell          = "imageLabelViewCell"
+        //new project
+        static let cmNameFieldCell             = "cmNameFieldCell"
     }
 
     struct CollectionCellIdentifiers {
@@ -46,6 +52,8 @@ struct MainStoryboard {
         static let cmProjectCell               = "CMProjectCell"
         static let joinProjectCell             = "JoinProjectCell"
         static let imageLabelViewCell          = "ImageLabelViewCell"
+        //new project 
+        static let cmNameFieldCell             = "CMNameFieldCell"
     }
 
     struct SegueIdentifiers {
@@ -74,6 +82,8 @@ struct SlidePanelStoryboard {
         static let settingNav      = "settingNavVC"
         static let userInfoNav     = "myUserInfoNavgationController"
         static let userProfileVC   = "userProfileVC"
+        //钱包充值
+        static let cmWalletRechargeVC          = "cmWalletRechargeVC"
     }
 }
 
