@@ -138,6 +138,7 @@ class CMRegisterViewController: UIViewController, UITextFieldDelegate {
         
         // everything is fine, ready to go
         var encryptedPasswd = (passwd as! String).MD5()
+        print(encryptedPasswd)
         APIClient.sharedInstance.userRegister(tel!, username: username!, passwd: encryptedPasswd, success: { (json) -> Void in
             print(json)
             let code = json[APIClient.RESP][APIClient.CODE].intValue
