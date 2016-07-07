@@ -60,7 +60,7 @@ class UserProfileVC: UITableViewController {
         if let cfUser = CMContext.currentUser {
             nick = (cfUser.user?.nick)!
             tel = (cfUser.user?.tel)!
-            sex = (cfUser.user?.sex)!
+            sex = (cfUser.user?.sex ?? UserSex.UNKNOWN_Sex)!
             
             if let avatar_url = cfUser.user?.avatar {
                 let url = NSURL(string: avatar_url as String)
@@ -111,6 +111,10 @@ class UserProfileVC: UITableViewController {
         return 0.1
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
     @IBAction func unwindWithSelectedSex(segue:UIStoryboardSegue) {
         if let sexPickerViewController = segue.sourceViewController as? CMUserSexPickerTVC,
             selectedSex = sexPickerViewController.selectedSex {
@@ -118,16 +122,21 @@ class UserProfileVC: UITableViewController {
                     return
                 }else {
                     
+                    
+                    
                     CMContext.currentUser?.user?.sex = selectedSex
-                    APIClient.sharedInstance.updateAppUser(CMContext.sharedInstance.getToken()!, cfUser: CMContext.currentUser!, success: { (json) -> Void in
-                            if json.respStatus() == .OK {
-                                self.sex = selectedSex
-                            }else {
-                                print("update user.sex failed:\(json.respMsg())")
-                            }
+                    print(CMContext.sharedInstance.getToken()!)
+                    APIClient.sharedInstance.changeUserSex(CMContext.sharedInstance.getToken()!, sex: selectedSex, success: { (json) -> Void in
+                        if json.codeStatus() == .OK {
+                            self.sex = selectedSex
+                        }else {
+                            print("update user.sex failed:\(json.msg())")
+                        }
                         }, failure: { (error) -> Void in
                             
                     })
+                    
+                    
                 }
         }
     }

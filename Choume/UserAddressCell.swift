@@ -31,4 +31,10 @@ class UserAddressCell: UITableViewCell {
         contactsPhoneLabel.text = model.contactsPhone
         addressLabel.text = model.address
     }
+    
+    func setAddr(addr: UserAddress) {
+        contactsNameLabel.text = addr.name
+        contactsPhoneLabel.text = addr.contact
+        addressLabel.text = String(stringInterpolation: addr.area!, " ", addr.detail!)
+    }
 }

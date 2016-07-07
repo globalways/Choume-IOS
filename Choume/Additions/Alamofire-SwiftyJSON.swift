@@ -10,7 +10,7 @@ import Foundation
 
 import Alamofire
 import SwiftyJSON
-import JSONJoy
+import ObjectMapper
 
 // MARK: - Request for Swift JSON
 
@@ -56,10 +56,12 @@ extension Request {
 }
 
 extension JSON {
+    
+    ///需要json本身是CfUser
     func toCfUser() -> CfUser?{
         var cfUser: CfUser?
         do{
-            cfUser = try CfUser(JSONDecoder(self.rawData()))
+            cfUser = try Mapper<CfUser>().map(self.rawString())
         }
         catch let error as NSError {
             print(error)
@@ -67,14 +69,143 @@ extension JSON {
         return cfUser
     }
     
-    //---------------  http api -----------------------------------
+    func toCfProject() -> CfProject?{
+        var cfProject: CfProject?
+        do{
+            cfProject = try Mapper<CfProject>().map(self.rawString())
+        }
+        catch let error as NSError {
+            print(error)
+        }
+        return cfProject
+    }
+    
+    func toUserWallet() -> UserWallet?{
+        var wallet: UserWallet?
+        do{
+            wallet = try Mapper<UserWallet>().map(self.rawString())
+        }
+        catch let error as NSError {
+            print(error)
+        }
+        return wallet
+    }
+    
+    func toUserWalletHistory() -> UserWalletHistory?{
+        var userWalletHistory: UserWalletHistory?
+        do{
+            userWalletHistory = try Mapper<UserWalletHistory>().map(self.rawString())
+        }
+        catch let error as NSError {
+            print(error)
+        }
+        return userWalletHistory
+    }
+    
+    func toUserAddress() -> UserAddress?{
+        var userAddress: UserAddress?
+        do{
+            userAddress = try Mapper<UserAddress>().map(self.rawString())
+        }
+        catch let error as NSError {
+            print(error)
+        }
+        return userAddress
+    }
+    
+    func toCfProjectComment() -> CfProjectComment?{
+        var comment: CfProjectComment?
+        do{
+            comment = try Mapper<CfProjectComment>().map(self.rawString())
+        }
+        catch let error as NSError {
+            print(error)
+        }
+        return comment
+    }
+    
+    func toCfProjectInvest() -> CfProjectInvest?{
+        var invest: CfProjectInvest?
+        do{
+            invest = try Mapper<CfProjectInvest>().map(self.rawString())
+        }
+        catch let error as NSError {
+            print(error)
+        }
+        return invest
+    }
+    
+    
+    func toCfProjects() -> [CfProject]{
+        var projects: [CfProject] = []
+        if let tmp = Mapper<CfProject>().mapArray(self.rawString()) {
+            projects = tmp
+        }
+//        do{
+//            projects = try Mapper<CfProject>().mapArray(self.rawString())!
+//        }
+//        catch let error as NSError {
+//            print(error)
+//        }
+        return projects
+    }
+    
+    func toCfProjectComments() -> [CfProjectComment]{
+        var comments: [CfProjectComment] = []
+        if let tmp = Mapper<CfProjectComment>().mapArray(self.rawString()) {
+            comments = tmp
+        }
+        //        do{
+        //            projects = try Mapper<CfProject>().mapArray(self.rawString())!
+        //        }
+        //        catch let error as NSError {
+        //            print(error)
+        //        }
+        return comments
+    }
+    
+    //--------------- parse cm json -----------------------------------
+    
+    /// return self[APIClient.cfUser]
+    func cfUserJSON() -> JSON{
+        return self[APIClient.cfUser]
+    }
+    
+    func getToken() -> String{
+        return self[APIClient.TOKEN].stringValue
+    }
+    
+
+    
+    
+    
+    
+    /// json.resp.code
+    // if json not contain a "resp" return the other model
     func respStatus() -> APIStatus{
         let code = self[APIClient.RESP][APIClient.CODE].intValue
+        if let status = APIStatus(rawValue: code){
+            return status
+        }else{
+            return codeStatus()
+        }
+    }
+    
+    ///json.code
+    func codeStatus() -> APIStatus{
+        let code = self[APIClient.CODE].intValue
         return APIStatus(rawValue: code)!
     }
     
+    ///json.resp.msg
     func respMsg() -> String {
         let msg = self[APIClient.RESP][APIClient.MSG].stringValue
+        return msg
+    }
+    
+    ///json.msg
+    func msg() -> String {
+        let msg = self[APIClient.MSG].stringValue
         return msg
     }
     

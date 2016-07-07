@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CMProjectRewardSupportTypeVCDelegate {
-    func supportTypeAndCount(type: CfProjectSupportType, count: UInt64)
+    func supportTypeAndCount(type: CfProjectSupportType, count: Int)
 }
 
 class CMProjectRewardSupportTypeVC: UITableViewController {
@@ -26,7 +26,7 @@ class CMProjectRewardSupportTypeVC: UITableViewController {
     }
     
     override func setEditing(editing: Bool, animated: Bool) {
-        if let count = numTextField.text?.uint64Value {
+        if let count = numTextField.text?.integerValue {
             delegate?.supportTypeAndCount(CfProjectSupportType(rawValue: seletedIndex!+1)!, count: count)
         }
        
@@ -42,6 +42,7 @@ class CMProjectRewardSupportTypeVC: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 0 {
             if let index = seletedIndex {
                 let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0))

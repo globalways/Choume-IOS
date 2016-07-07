@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="200" id="KGk-i7-Jjw" customClass="CMTextImageCell" customModule="Choume" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="324" height="200"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="324" height="200"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="CZR-cb-4Wi" customClass="KMPlaceholderTextView" customModule="KMPlaceholderTextView">
+                        <rect key="frame" x="15" y="0.0" width="294" height="115"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" name="keyboardFocusIndicatorColor" catalog="System" colorSpace="catalog"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="115" id="Ps1-lz-43D"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="项目介绍"/>
+                        </userDefinedRuntimeAttributes>
+                    </textView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Npo-cE-GvX">
+                        <rect key="frame" x="11" y="130" width="58" height="58"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="58" id="4GD-nj-VnF"/>
+                            <constraint firstAttribute="height" constant="58" id="tne-Gj-juc"/>
+                        </constraints>
+                        <state key="normal" title="选择图片" image="Icon_Add_Outline"/>
+                        <connections>
+                            <action selector="toSelectImages" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Raw-BG-GeP"/>
+                        </connections>
+                    </button>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Fdg-mM-puK">
+                        <rect key="frame" x="77" y="128" width="232" height="60"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="60" id="GtP-fc-BHu"/>
+                        </constraints>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="8rZ-iD-vW1">
+                            <size key="itemSize" width="60" height="60"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                    </collectionView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Npo-cE-GvX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="11" id="7Ix-u4-ov4"/>
+                    <constraint firstAttribute="bottom" secondItem="Fdg-mM-puK" secondAttribute="bottom" constant="12" id="7R6-Pk-By4"/>
+                    <constraint firstItem="Fdg-mM-puK" firstAttribute="leading" secondItem="Npo-cE-GvX" secondAttribute="trailing" constant="8" id="AsD-Of-8pL"/>
+                    <constraint firstItem="CZR-cb-4Wi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Bvs-Uq-rL8"/>
+                    <constraint firstAttribute="bottom" secondItem="Npo-cE-GvX" secondAttribute="bottom" constant="12" id="XC3-0X-6PH"/>
+                    <constraint firstItem="CZR-cb-4Wi" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="a8w-GN-WHJ"/>
+                    <constraint firstAttribute="trailing" secondItem="Fdg-mM-puK" secondAttribute="trailing" constant="15" id="hfk-Kq-2Q0"/>
+                    <constraint firstAttribute="trailing" secondItem="CZR-cb-4Wi" secondAttribute="trailing" constant="15" id="ueb-Jg-qcN"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="btnSelectImage" destination="Npo-cE-GvX" id="N1s-J5-pGS"/>
+                <outlet property="cvImageList" destination="Fdg-mM-puK" id="vYZ-6Y-yOV"/>
+                <outlet property="tvIntroduction" destination="CZR-cb-4Wi" id="tyM-bq-zQ5"/>
+            </connections>
+            <point key="canvasLocation" x="501" y="469"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Icon_Add_Outline" width="64" height="64"/>
+    </resources>
+</document>

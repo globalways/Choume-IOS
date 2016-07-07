@@ -15,4 +15,15 @@ extension UIViewController {
         alertCtl.addAction(cancelAction)
         self.presentViewController(alertCtl, animated: true, completion: nil)
     }
+    
+    func cmAlert(title: String, msg: String, ok:(UIAlertAction) -> Void, cancel:(UIAlertAction) -> Void) {
+        let alertVc = CMAlertController(title: title, message: msg, preferredStyle: .Alert)
+        
+        let okAction = UIAlertAction(title: BUTTON_OK, style: .Default, handler: ok)
+        let cancelAction = UIAlertAction(title: BUTTON_CANCEL, style: .Cancel, handler: cancel)
+        alertVc.addAction(okAction)
+        alertVc.addAction(cancelAction)
+        
+        self.presentViewController(alertVc, animated: true, completion: nil)
+    }
 }

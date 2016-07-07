@@ -6,53 +6,67 @@
 //  Copyright © 2015年 outsouring. All rights reserved.
 //
 import Foundation
-import JSONJoy
+import ObjectMapper
+
 
 //-------------------  筹么用户 ---------------------------------
 
 
-struct CfUser: JSONJoy {
-    var id: Int64?
-    var hongId: Int64?
-    var fundProjects:Array<CfProject>?
-    var certification:CfUserCertApply?
-    var collectedProjects:Array<CfProject>?
-    var addrs:Array<CfUserAddr>?
-    var point:UInt64?
-    var coin:UInt64?
+class CfUser: Mappable {
+    var id: Int?
+    var hongId: Int?
+    var fundProjects: [CfProject]           = []
+    var certification: CfUserCertApply?
+    var collectedProjects: Array<CfProject> = []
+    var investProjects: [CfProjectInvest]   = []
+    var point:Int = 0
+    var coin:Int  = 0
     var rcToken:String?
+    var role: CfUserRole = CfUserRole.USER_CFUR
     var user: User?
-    init() {
+    
+    required init?(_ map: Map){
+        
     }
-    init(_ decoder: JSONDecoder) {
-        id = Int64(decoder["id"].integer!)
-        hongId = Int64(decoder["hongId"].integer!)
-        user = User(decoder["user"])
-        certification = CfUserCertApply(decoder["certification"])
-        if let decoderArray = decoder["collectedProjects"].array {
-            collectedProjects = Array<CfProject>()
-            for cpDecoder in decoderArray {
-                collectedProjects?.append(CfProject(cpDecoder))
-            }
-        }
-//        if let tmp = decoder["certification"].integer {
-//            certification = CfUserCertApply(
-//        }else{
-//            authority = UserAuthority(rawValue: decoder["authority"].integer!)
-//        }
+    func mapping(map: Map){
+        id                 <- map["id"]
+        hongId             <- map["hongId"]
+        fundProjects       <- map["fundProjects"]
+        certification      <- map["certification"]
+        collectedProjects  <- map["collectedProjects"]
+        investProjects     <- map["investProjects"]
+        point              <- map["point"]
+        coin               <- map["coin"]
+        rcToken            <- map["rcToken"]
+        role               <- map["role"]
+        user               <- map["user"]
     }
 }
 
 // 众筹用户收货地址
-struct CfUserAddr: JSONJoy {
-    var id: Int64?
-    var cfUserId: Int64?
+class UserAddress: Mappable {
+    var id: Int?
+    var name: String?
     var contact: String?
-    var tel: String?
-    var address: String?
-    init(_ decoder: JSONDecoder) {
-        //id = decoder["id"].int64Value
+    var area: String?
+    var detail: String?
+    var userId: Int?
+
+    init(){}
+    
+    required init?(_ map: Map){
+        
     }
+    
+    func mapping(map: Map){
+        id                 <- map["id"]
+        name               <- map["name"]
+        contact            <- map["contact"]
+        area               <- map["area"]
+        detail             <- map["detail"]
+        userId             <- map["userId"]
+    }
+    
 }
 
 enum CfUserRole: Int {
@@ -81,65 +95,66 @@ enum CfUserCeritificationStatus: Int {
 }
 
 // 认证申请
-struct CfUserCertApply: JSONJoy {
-    var id: Int64?
+class CfUserCertApply: Mappable {
+    var id: Int?
     // 认证类型
     var type: CfUserCertificationType?
     // 用户id
-    var cfUserId: Int64?
+    var cfUserId: Int?
     // 申请时间
-    var applyTime: Int64?
+    var applyTime: Int?
     // 认证状态
     var status: CfUserCeritificationStatus?
     // 审核人
-    var auditor: UInt64?
+    var auditor: Int?
     // 备注
     var comment: String?
     // 审核时间
-    var auditTime: Int64?
+    var auditTime: Int?
     // 认证名
     var name: String?
     // 所属学校
     var school: String?
     // 材料
     var pics:Array<CfUserCertPic>?
-    var hongId: Int64?
-    init(){}
-    init(_ decoder: JSONDecoder) {
-        id = decoder["id"].int64Value
-        if let tmp = decoder["type"].integer {
-            type = CfUserCertificationType(rawValue: tmp)
-        }
-        cfUserId = decoder["cfUserId"].int64Value
-        applyTime = decoder["applyTime"].int64Value
-        if let tmp = decoder["status"].integer {
-            status = CfUserCeritificationStatus(rawValue: tmp)
-        }
-        auditor = decoder["auditor"].uint64Value
-        comment = decoder["comment"].string
-        auditTime = decoder["auditTime"].int64Value
-        name = decoder["name"].string
-        school = decoder["school"].string
-        if let decoderArray = decoder["pics"].array {
-            pics = Array<CfUserCertPic>()
-            for picDecoder in decoderArray {
-                pics?.append(CfUserCertPic(picDecoder))
-            }
-        }
-        hongId = decoder["hongId"].int64Value
+    var hongId: Int?
+    
+    required init?(_ map: Map){
+        
     }
+    
+    func mapping(map: Map){
+        id                 <- map["id"]
+        type               <- map["type"]
+        cfUserId           <- map["cfUserId"]
+        applyTime          <- map["applyTime"]
+        status             <- map["status"]
+        auditor            <- map["auditor"]
+        comment            <- map["comment"]
+        auditTime          <- map["auditTime"]
+        name               <- map["name"]
+        school             <- map["school"]
+        pics               <- map["pics"]
+        hongId             <- map["hongId"]
+    }
+    
 }
 
 
 // 认证申请材料
-struct CfUserCertPic: JSONJoy {
-    var id: Int64?
-    var cfUserCertApplyId: Int64?
+class CfUserCertPic: Mappable {
+    var id: Int?
+    var cfUserCertApplyId: Int?
     var url: String?
-    init(_ decoder: JSONDecoder) {
-        id = decoder["id"].int64Value
-        cfUserCertApplyId = decoder["cfUserCertApplyId"].int64Value
-        url = decoder["url"].string
+    
+    required init?(_ map: Map){
+        
+    }
+    
+    func mapping(map: Map){
+        id                 <- map["id"]
+        cfUserCertApplyId  <- map["cfUserCertApplyId"]
+        url                <- map["url"]
     }
 }
 
@@ -147,8 +162,8 @@ struct CfUserCertPic: JSONJoy {
 //------------------------------  筹么项目  ----------------------------
 
 // 众筹项目
-struct CfProject: JSONJoy {
-    var id: Int64?
+class CfProject: Mappable, Equatable {
+    var id: Int?
     // 标题
     var title: String?
     // 描述（255字符）
@@ -158,21 +173,21 @@ struct CfProject: JSONJoy {
     // 联系方式
     var tel: String?
     // 发起者
-    var cfUserId: Int64?
+    var cfUserId: Int?
     // 发起时间
-    var fundTime: Int64?
+    var fundTime: Int?
     // 图片列表
-    var pics: Array<CfProjectPic>?
+    var pics: [CfProjectPic] = []
     // 想筹集的钱(筹币)
-    var requiredMoneyAmount: UInt64?
+    var requiredMoneyAmount: Int = 0
     // 想筹集的物品数量
-    var requiredGoodsAmount: UInt64?
+    var requiredGoodsAmount: Int = 0
     // 想筹集的人数
-    var requiredPeopleAmount: UInt64?
+    var requiredPeopleAmount: Int = 0
     // 募集的物品名称
     var requiredGoodsName: String?
     // 截止日期
-    var deadline: Int64?
+    var deadline: Int = 0
     // 众筹类别
     var category: CrowdFundingCategory?
     // 回报方式列表
@@ -181,59 +196,134 @@ struct CfProject: JSONJoy {
     // 收藏的用户
     var collectedUsers: Array<CfUser>?
     // 投资记录
-    var invests: Array<CfProjectInvest>?
+    var invests: Array<CfProjectInvest> = []
     // 聚合标签
     var tag: CfProjectTag?
     // 发起者hongid
-    var hongId: UInt64?
-    var auditTime: Int64?
-    var auditer: UInt64?
+    var hongId: Int?
+    var auditTime: Int?
+    var auditer: Int?
     // 已筹的钱(筹币)
-    var alreadyMoneyAmount: UInt64?
+    var alreadyMoneyAmount: Int = 0
     // 已筹的物品数
-    var alreadyGoodsAmount: UInt64?
+    var alreadyGoodsAmount: Int = 0
     // 已筹的人数
-    var alreadyPeopleAmount: UInt64?
+    var alreadyPeopleAmount: Int = 0
     // 主要目标类型
     var majarType: CfProjectSupportType?
     // 学校code
     var school: String?
     // 校园合伙人-项目-融资额
-    var requiredProjectAmount: UInt64?
+    var requiredProjectAmount: Int?
     // 校园合伙人-项目-出让股份千分之n
-    var requiredProjectEquity: UInt64?
+    var requiredProjectEquity: Int?
     // 校园合伙人-项目-已筹集的股份
-    var alreadyProjectEquity: UInt64?
+    var alreadyProjectEquity: Int?
     // 附加费统计
-    var additionalCoin: UInt64?
+    var additionalCoin: Int?
     // 校园合伙人-产品-二次收益分配股权
-    var secondProductEquity: UInt64?
+    var secondProductEquity: Int?
     // 从哪个项目派生
-    var parentProjectId: Int64?
+    var parentProjectId: Int?
     // 利润率  千分之n
-    var profitRate: UInt64?
-    init() {}
-    init(_ decoder: JSONDecoder) {
-        id = decoder["id"].int64Value
-        title = decoder["title"].string
+    var profitRate: Int?
+    // 介绍 html文本
+    var intro: String?
+    
+    init(){
+        
     }
+    
+    required init?(_ map: Map){
+        
+    }
+    
+    func mapping(map: Map){
+        id                       <- map["id"]
+        title                    <- map["title"]
+        desc                     <- map["desc"]
+        contact                  <- map["contact"]
+        tel                      <- map["tel"]
+        cfUserId                 <- map["cfUserId"]
+        fundTime                 <- map["fundTime"]
+        pics                     <- map["pics"]
+        requiredMoneyAmount      <- map["requiredMoneyAmount"]
+        requiredGoodsAmount      <- map["requiredGoodsAmount"]
+        requiredPeopleAmount     <- map["requiredPeopleAmount"]
+        requiredGoodsName        <- map["requiredGoodsName"]
+        deadline                 <- map["deadline"]
+        category                 <- map["category"]
+        rewards                  <- map["rewards"]
+        status                   <- map["status"]
+        collectedUsers           <- map["collectedUsers"]
+        invests                  <- map["invests"]
+        tag                      <- map["tag"]
+        hongId                   <- map["hongId"]
+        auditTime                <- map["auditTime"]
+        auditer                  <- map["auditer"]
+        alreadyMoneyAmount       <- map["alreadyMoneyAmount"]
+        alreadyGoodsAmount       <- map["alreadyGoodsAmount"]
+        alreadyPeopleAmount      <- map["alreadyPeopleAmount"]
+        majarType                <- map["majarType"]
+        school                   <- map["school"]
+        requiredProjectAmount    <- map["requiredProjectAmount"]
+        requiredProjectEquity    <- map["requiredProjectEquity"]
+        alreadyProjectEquity     <- map["alreadyProjectEquity"]
+        additionalCoin           <- map["additionalCoin"]
+        secondProductEquity      <- map["secondProductEquity"]
+        parentProjectId          <- map["parentProjectId"]
+        profitRate               <- map["profitRate"]
+        intro                    <- map["intro"]
+    }
+    
+}
+
+func ==(lhs: CfProject, rhs: CfProject) -> Bool {
+    return lhs.id == rhs.id
 }
 
 
 // 支持方式
-enum CfProjectSupportType: Int {
-    case INVALID_CFPST = 0;
+enum CfProjectSupportType: RawRepresentable {
+    case INVALID_CFPST
     // 钱
-    case MONEY_CFPST = 1;
+    case MONEY_CFPST
     // 人
-    case PEOPLE_CFPST = 2;
+    case PEOPLE_CFPST
     // 物
-    case GOODS_CFPST = 3;
-    func desc(count: UInt64) -> String {
+    case GOODS_CFPST
+    // 股权众筹 校园合伙人项目类专用
+    case EQUITY_CFPST
+
+    typealias RawValue = Int
+    var rawValue: RawValue {
         switch self {
-        case .MONEY_CFPST: return String(count)+"元"
+        case .INVALID_CFPST: return 0
+        case .MONEY_CFPST: return 1
+        case .PEOPLE_CFPST:return 2
+        case .GOODS_CFPST: return 3
+        case .EQUITY_CFPST: return 4
+        }
+    }
+        
+    
+    init?(rawValue: CfProjectSupportType.RawValue) {
+        switch rawValue {
+        case 0: self = .INVALID_CFPST; break
+        case 1: self = .MONEY_CFPST; break
+        case 2: self = .PEOPLE_CFPST; break
+        case 3: self = .GOODS_CFPST; break
+        case 4: self = .EQUITY_CFPST; break
+        default: self = .INVALID_CFPST; break
+        }
+    }
+    
+    func desc(count: Int) -> String {
+        switch self {
+        case .MONEY_CFPST: return String(count)+"筹币"
         case .PEOPLE_CFPST: return "人员"+String(count)+"名"
         case .GOODS_CFPST: return "物品"+String(count) + "件"
+        case .EQUITY_CFPST: return ""
         default: return "未知"
         }
     }
@@ -291,73 +381,179 @@ enum CfProjectInvestStatus: Int {
     case SUCCESS_CFPIS = 3;
     // 过期
     case EXPIRED_CFPIS = 4;
+    func desc() -> String {
+        switch self {
+        case .PENDING_CFPIS: return "等待"
+        case .PAID_CFPIS: return "已支付"
+        case .SUCCESS_CFPIS: return "成功"
+        case .EXPIRED_CFPIS: return "过期"
+        default:
+            return "未知状态"
+        }
+    }
 }
 
 // 众筹项目投资记录
-struct CfProjectInvest {
-    var id: Int64?
+class CfProjectInvest: Mappable {
+    var id: Int?
     // 项目id
-    var cfProjectId: Int64
+    var cfProjectId: Int?
     // 回报方式ID
-    var cfProjectRewardId: Int64
+    var cfProjectRewardId: Int?
     // 投资份数
-    var count: UInt64
+    var count: Int?
     // 投资时间
-    var investTime: Int64
+    var investTime: Int = 0
     // 用户
-    var hongId: UInt64
+    var hongId: Int?
     // 备注
-    var comment: String
+    var comment: String?
     // 地址id
-    var addrId: Int64
+    var addrId: Int = 0
     // 过期时间
-    var expiredTime: Int64
+    var expiredTime: Int?
     // 投资状态
-    var status: CfProjectInvestStatus
+    var status: CfProjectInvestStatus?
     // 订单
-    var orderId: String
-    // // 应该支付的筹币数
-    var coinPay: UInt64
+    var orderId: String?
+    // 应该支付的筹币数
+    var coinPay: Int?
+    // 回报方式
+    var rewardName: String?
+    // 项目
+    var projectName: String?
+    // 投资者内部id,关联用,客户端不管
+    var cfUserId: Int?
+    // 项目头一张图
+    var projectPic:String = ""
+    // 支持份数
+    var rewardCount: Int = 0
+    // 每份的量
+    var rewardAmount: Int = 0
+    // 回报方式类型
+    var rewardSupportType: CfProjectSupportType = .INVALID_CFPST
+    // 投资者头像
+    var investorAvatar: String = ""
+    // 投资者昵称
+    var investorNick: String?
+    
+    required init?(_ map: Map){
+        
+    }
+
+    func mapping(map: Map){
+        id                   <- map["id"]
+        cfProjectId          <- map["cfProjectId"]
+        cfProjectRewardId    <- map["cfProjectRewardId"]
+        count                <- map["count"]
+        investTime           <- map["investTime"]
+        hongId               <- map["hongId"]
+        comment              <- map["comment"]
+        addrId               <- map["addrId"]
+        expiredTime          <- map["expiredTime"]
+        status               <- map["status"]
+        orderId              <- map["orderId"]
+        coinPay              <- map["coinPay"]
+        rewardName           <- map["rewardName"]
+        projectName          <- map["projectName"]
+        cfUserId             <- map["cfUserId"]
+        projectPic           <- map["projectPic"]
+        rewardCount          <- map["rewardCount"]
+        rewardAmount         <- map["rewardAmount"]
+        rewardSupportType    <- map["rewardSupportType"]
+        investorAvatar       <- map["investorAvatar"]
+        investorNick         <- map["investorNick"]
+    }
+
 }
 
 // 回报方式
-struct CfProjectReward {
-    var id: Int64?
+class CfProjectReward: Mappable {
+    var id: Int?
     // 回报描述(255字符)
     var desc: String?
     // 支持方式
     var supportType: CfProjectSupportType?
     // 支持数量(人/钱/物/股权), 股权支持为千分之n
-    var amount: UInt64?
+    var amount: Int = 0
     // 限制份数
-    var limitedCount: UInt64?
+    var limitedCount: Int?
     // 项目id
-    var CfProjectId: Int64?
+    var CfProjectId: Int?
     // 已经投资的份数
-    var alreadyCount: UInt64?
+    var alreadyCount: Int = 0
     // 附加筹币
-    var additionalCoin: UInt64?
+    var additionalCoin: Int?
     // 是否已被删除
     var del: Bool?
-    init(){}
+    // 是否需要收货地址
+    var needAddr: Bool = false
+    // 是否需要联系方式
+    var needPhone: Bool = false
+    
+    init(){
+        
+    }
+    required init?(_ map: Map){
+        
+    }
+    
+    func mapping(map: Map){
+        id                     <- map["id"]
+        desc                   <- map["desc"]
+        supportType            <- map["supportType"]
+        amount                 <- map["amount"]
+        limitedCount           <- map["limitedCount"]
+        CfProjectId            <- map["CfProjectId"]
+        alreadyCount           <- map["alreadyCount"]
+        additionalCoin         <- map["additionalCoin"]
+        del                    <- map["del"]
+        needAddr               <- map["needAddr"]
+        needPhone              <- map["needPhone"]
+    }
 }
 
 // 用户与项目的收藏关系 many to many
-struct UsersCollectProjects {
-    var id: Int64
+class UsersCollectProjects {
+    var id: Int?
     // 项目id
-    var CfProjectId: Int64
+    var CfProjectId: Int?
     // 用户id
-    var CfUserId:Int64
+    var CfUserId:Int?
+    
+    required init?(_ map: Map){
+        
+    }
+    
+    func mapping(map: Map){
+        id                     <- map["id"]
+        CfProjectId            <- map["CfProjectId"]
+        CfUserId               <- map["CfUserId"]
+    }
 }
 
 // 众筹项目图片
-struct CfProjectPic {
-    var id: Int64
-    var cfProjectId: Int64
-    var url: String
+class CfProjectPic: Mappable {
+    var id: Int!
+    var cfProjectId: Int?
+    var url: String!
     // 是否已被删除
-    var del: Bool
+    var del: Bool = false
+    
+    required init?(_ map: Map){
+        
+    }
+    
+    init(url: String){
+        self.url = url
+    }
+
+    func mapping(map: Map){
+        id                     <- map["id"]
+        cfProjectId            <- map["CfProjectId"]
+        url                    <- map["url"]
+        del                    <- map["del"]
+    }
 }
 
 //------------------------  钱包  --------------------------
@@ -380,14 +576,30 @@ enum CFCBHistoryType: Int {
 }
 
 // 筹币消费记录
-struct CFCBHistory {
-    var id: Int64
-    var type: CFCBHistoryType
-    var coin: UInt64
-    var  remain: UInt64
-    var time: Int64
-    var orderId: String
-    var hongId: Int64
+class CFCBHistory {
+    var id: Int!
+    var type: CFCBHistoryType?
+    var coin: Int?
+    var remain: Int?
+    var time: Int?
+    var orderId: String?
+    var hongId: Int?
+    var finished: Bool?
+    
+    required init?(_ map: Map){
+        
+    }
+
+    func mapping(map: Map){
+        id                     <- map["id"]
+        type                   <- map["type"]
+        coin                   <- map["coin"]
+        remain                 <- map["remain"]
+        time                   <- map["time"]
+        orderId                <- map["orderId"]
+        hongId                 <- map["hongId"]
+        finished               <- map["finished"]
+    }
 }
 
 //---------------------- 消息 ------------------------------
@@ -401,24 +613,79 @@ enum CfMessageType: Int {
 }
 
 // 众筹系统消息
-struct CfMessage {
+class CfMessage: Mappable {
     // 消息头
-    var title: String
+    var title: String?
     // 时间
-    var time: Int64
+    var time: Int?
     // 消息类型
-    var type: CfMessageType
+    var type: CfMessageType?
     // 消息内容
-    var content: String
+    var content: String?
+    // 项目消息此处有值
+    var project: CfProject?
+    // 评论消息此处有值
+    var comment: CfProjectComment?
+    
+    required init?(_ map: Map){
+        
+    }
+    
+    func mapping(map: Map){
+        title                  <- map["title"]
+        time                   <- map["time"]
+        type                   <- map["type"]
+        content                <- map["content"]
+        project                <- map["project"]
+        comment                <- map["comment"]
+    }
+}
+
+
+// 项目评论
+class CfProjectComment: Mappable {
+    var id: Int!
+    // 项目id
+    var projectId: Int?
+    // 评论人头像
+    var avatar: String = ""
+    // 评论人hongid
+    var userId: Int?
+    // 评论人nick
+    var userNick: String?
+    // 被回复人hongid
+    var repliedUserId: Int?
+    // 被回复人nick
+    var repliedUserNick: String?
+    // 内容
+    var content: String?
+    // 评论时间
+    var time: Int = 0
+    
+    required init?(_ map: Map){
+        
+    }
+    
+    func mapping(map: Map){
+        id                  <- map["id"]
+        projectId           <- map["projectId"]
+        avatar              <- map["avatar"]
+        userId              <- map["userId"]
+        userNick            <- map["userNick"]
+        repliedUserId       <- map["repliedUserId"]
+        repliedUserNick     <- map["repliedUserNick"]
+        content             <- map["content"]
+        time                <- map["time"]
+    }
 }
 
 
 
 //------------------------ ht ------------------------------
 
-struct User: JSONJoy {
-    var id: Int64?
-    var hongId: Int64?
+class User: Mappable{
+    var id: Int?
+    var hongId: Int?
     var nick: String?
     var tel: String?
     var email: String?
@@ -428,39 +695,190 @@ struct User: JSONJoy {
     var sex: UserSex?
     var authority: UserAuthority?
     var status: UserStatus?
-    var regTime: Int64?
-    var genTime: Int64?
+    var regTime: Int?
+    var genTime: Int?
     var comment: String?
-    var auditor: UInt64?
-    init(){}
-    init(_ decoder: JSONDecoder) {
-        id = Int64(decoder["id"].integer!)
-        hongId = Int64(decoder["hongId"].integer!)
-        nick = decoder["nick"].string
-        tel = decoder["tel"].string
-        email = decoder["email"].string
-        password = decoder["password"].string
-        avatar = decoder["avatar"].string
-        age = decoder["age"].integer
-        if decoder["sex"].integer == nil {
-            sex = UserSex.UNKNOWN_Sex
-        }else{
-            sex = UserSex(rawValue: decoder["sex"].integer!)
-        }
-        if decoder["authority"].integer == nil{
-            authority = UserAuthority.USER
-        }else{
-            authority = UserAuthority(rawValue: decoder["authority"].integer!)
-        }
-        if decoder["status"].integer == nil {
-            status = UserStatus.USE
-        }else{
-            status = UserStatus(rawValue: decoder["status"].integer!)
-        }
-        regTime = Int64(decoder["regTime"].integer!)
-        genTime = Int64(decoder["genTime"].integer!)
-        comment = decoder["comment"].string
+    // 操作者
+    var auditor: Int?
+    // 用户地址
+    var addrs: [UserAddress]?
+    // 用户钱包
+    var wallet: UserWallet?
+    
+    required init?(_ map: Map){
+        
     }
+    
+    func mapping(map: Map){
+        id                  <- map["id"]
+        hongId              <- map["hongId"]
+        nick                <- map["nick"]
+        tel                 <- map["tel"]
+        email               <- map["email"]
+        password            <- map["password"]
+        avatar              <- map["avatar"]
+        age                 <- map["age"]
+        sex                 <- map["sex"]
+        authority           <- map["authority"]
+        status              <- map["status"]
+        regTime             <- map["regTime"]
+        genTime             <- map["genTime"]
+        comment             <- map["comment"]
+        auditor             <- map["auditor"]
+        addrs               <- map["addrs"]
+        wallet              <- map["wallet"]
+    }
+}
+
+// 环途用户钱包
+class UserWallet:Mappable {
+    var id: Int?
+    // 用户红id
+    var hongId: Int?
+    // 余额，单位分
+    var amount: Int = 0
+    // 绑定的第三方钱包
+    var thirdPartyWallets: [ThirdPartyWallet]?
+    
+    required init?(_ map: Map){
+        
+    }
+    
+    func mapping(map: Map){
+        id                      <- map["id"]
+        hongId                  <- map["hongId"]
+        amount                  <- map["amount"]
+        thirdPartyWallets       <- map["thirdPartyWallets"]
+    }
+}
+
+// 环途用户钱包明细
+class UserWalletHistory: Mappable {
+    var id: Int?
+    // 用户红id
+    var hongId:Int?
+    // 明细类型
+    var type: UserWalletHistoryType?
+    // 额度，单位分
+    var amount:Int = 0;
+    // 创建时间
+    var created:Int = 0;
+    // 标题
+    var subject:String?
+    // 剩余余额，单位分
+    var remain = 0;
+    // 来自哪个app
+    var appId:String?
+    // 订单id
+    var orderId: String?
+    // 明细状态
+    var status: UserWalletHistoryStatus?
+    // 操作者
+    var auditor:Int?
+    
+    required init?(_ map: Map){
+        
+    }
+    
+    func mapping(map: Map) {
+        id                    <- map["id"]
+        hongId                <- map["hongId"]
+        type                  <- map["type"]
+        amount                <- map["amount"]
+        created               <- map["created"]
+        subject               <- map["subject"]
+        remain                <- map["remain"]
+        appId                 <- map["appId"]
+        orderId               <- map["orderId"]
+        status                <- map["status"]
+        auditor               <- map["auditor"]
+    }
+}
+
+// 第三方钱包
+class ThirdPartyWallet: Mappable {
+    var id: Int?
+    // 账户名
+    var name: String?
+    // 账号
+    var account: String?
+    // 用户钱包id
+    var userWalletId: Int?
+    // 是否验证通过
+    var varified: Bool?
+    // 钱包类型
+    var type: ThirdPartyWalletType?
+    // 创建时间
+    var created: Int?
+    // 预打款额度，单位分
+    var rechargeAmount: Int?
+    // 预打款订单id
+    var orderId: String?
+    // 后台操作人
+    var auditor: Int?
+    // 来自哪个app
+    var appId: String?
+    var hongId: Int?
+    
+    required init?(_ map: Map){
+        
+    }
+    
+    func mapping(map: Map){
+        id                  <- map["id"]
+        name                <- map["name"]
+        account             <- map["account"]
+        userWalletId        <- map["userWalletId"]
+        varified            <- map["varified"]
+        type                <- map["type"]
+        created             <- map["created"]
+        rechargeAmount      <- map["rechargeAmount"]
+        orderId             <- map["orderId"]
+        auditor             <- map["auditor"]
+        appId               <- map["appId"]
+        hongId              <- map["hongId"]
+    }
+}
+
+// 第三方钱包类型 枚举
+enum ThirdPartyWalletType: Int {
+    case INVALID_TPWT = 0;
+    // 支付宝
+    case ALIPAY_TPWT  = 1;
+    // 微信
+    case WEIXIN_TPWT  = 2;
+    init?(rawValue: Int){
+        switch rawValue {
+        case 0 : self = .INVALID_TPWT
+        case 1 : self = .ALIPAY_TPWT
+        case 2 : self = .WEIXIN_TPWT
+        default: self = .INVALID_TPWT
+        }
+    }
+}
+
+enum UserWalletHistoryType:Int {
+    case INVALID_WHT = 0;
+    // 消费
+    case CONSUME_WHT = 1;
+    // 充值
+    case RECHARGE_WHT = 2;
+    // 退款
+    case REFUND_WHT = 3;
+    // 提现
+    case WITHDRAW_WHT = 4;
+}
+
+enum UserWalletHistoryStatus:Int {
+    case INVALID_WHS = 0;
+    // 等待
+    case PENDING_WHS = 1;
+    // 成功
+    case SUCCESS_WHS = 2;
+    // 失败
+    case FAIL_WHS = 3;
+    // 取消
+    case CANCEL_WHS = 4;
 }
 
 enum UserSex: Int {
@@ -502,6 +920,17 @@ enum UserStatus: Int {
     case USE      = 3;
     // 锁定中
     case LOCK     = 4;
+    
+    init?(rawValue: Int) {
+        switch rawValue {
+        case 0: self = .INVALID
+        case 1: self = .NOTUSE
+        case 2: self = .PENDING
+        case 3: self = .USE
+        case 4: self = .LOCK
+        default: self = .INVALID
+        }
+    }
 }
 
 enum UserAuthority: Int {
@@ -509,4 +938,12 @@ enum UserAuthority: Int {
     case USER  = 0;
     // 管理员权限
     case ADMIN = 1;
+    
+    init?(rawValue: Int) {
+        switch rawValue {
+        case 0: self = .USER
+        case 1: self = .ADMIN
+        default: self = .USER
+        }
+    }
 }

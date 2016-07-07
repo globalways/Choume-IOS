@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cmFourRadioBtnCell" rowHeight="59" id="KGk-i7-Jjw" customClass="CMFourRadioBtnCell" customModule="Choume" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="373" height="59"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="373" height="59"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fiI-WB-ap6" customClass="DLRadioButton">
+                        <rect key="frame" x="281" y="7" width="77" height="45"/>
+                        <state key="normal" title="Button"/>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ivi-qm-kf5" customClass="DLRadioButton">
+                        <rect key="frame" x="104" y="7" width="77" height="45"/>
+                        <state key="normal" title="Button"/>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iEk-V7-6xj" customClass="DLRadioButton">
+                        <rect key="frame" x="192" y="7" width="78" height="45"/>
+                        <state key="normal" title="Button"/>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cYQ-Qb-g1z" customClass="DLRadioButton">
+                        <rect key="frame" x="15" y="7" width="78" height="45"/>
+                        <state key="normal" title="Button"/>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="cYQ-Qb-g1z" firstAttribute="width" secondItem="iEk-V7-6xj" secondAttribute="width" id="Fj3-fE-yBO"/>
+                    <constraint firstAttribute="bottom" secondItem="iEk-V7-6xj" secondAttribute="bottom" constant="7" id="Jhw-l2-InN"/>
+                    <constraint firstAttribute="bottom" secondItem="cYQ-Qb-g1z" secondAttribute="bottom" constant="6.5" id="PJN-0e-TRB"/>
+                    <constraint firstItem="cYQ-Qb-g1z" firstAttribute="width" secondItem="fiI-WB-ap6" secondAttribute="width" id="PQE-wA-FCA"/>
+                    <constraint firstItem="fiI-WB-ap6" firstAttribute="leading" secondItem="iEk-V7-6xj" secondAttribute="trailing" constant="11" id="Znx-Wq-r76"/>
+                    <constraint firstItem="fiI-WB-ap6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="asv-k5-tI2"/>
+                    <constraint firstItem="iEk-V7-6xj" firstAttribute="leading" secondItem="ivi-qm-kf5" secondAttribute="trailing" constant="11" id="bdO-Us-0fW"/>
+                    <constraint firstItem="cYQ-Qb-g1z" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="blY-Kt-0WU"/>
+                    <constraint firstAttribute="bottom" secondItem="fiI-WB-ap6" secondAttribute="bottom" constant="7" id="iTS-eF-fb8"/>
+                    <constraint firstItem="cYQ-Qb-g1z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="klO-dV-s5o"/>
+                    <constraint firstItem="ivi-qm-kf5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="kme-6r-tyD"/>
+                    <constraint firstItem="iEk-V7-6xj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="lJc-fI-dm7"/>
+                    <constraint firstItem="cYQ-Qb-g1z" firstAttribute="width" secondItem="ivi-qm-kf5" secondAttribute="width" id="nMD-28-cKh"/>
+                    <constraint firstAttribute="bottom" secondItem="ivi-qm-kf5" secondAttribute="bottom" constant="7" id="oOK-ve-dZw"/>
+                    <constraint firstItem="ivi-qm-kf5" firstAttribute="leading" secondItem="cYQ-Qb-g1z" secondAttribute="trailing" constant="11" id="yR6-H6-o0X"/>
+                    <constraint firstAttribute="trailing" secondItem="fiI-WB-ap6" secondAttribute="trailing" constant="15" id="yd9-dz-Edw"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="btnEquity" destination="fiI-WB-ap6" id="FdR-N6-z4o"/>
+                <outlet property="btnGoods" destination="iEk-V7-6xj" id="t7L-qC-4kj"/>
+                <outlet property="btnMoney" destination="cYQ-Qb-g1z" id="NPa-xC-oQm"/>
+                <outlet property="btnPeople" destination="ivi-qm-kf5" id="bvv-4Y-LF6"/>
+            </connections>
+            <point key="canvasLocation" x="407.5" y="302.5"/>
+        </tableViewCell>
+    </objects>
+</document>

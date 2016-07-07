@@ -15,9 +15,12 @@ class DoubleTextView: UIView {
     private let leftTextButton: NoHighlightButton =  NoHighlightButton()
     private let rightTextButton: NoHighlightButton = NoHighlightButton()
     private let centerTextButton: NoHighlightButton = NoHighlightButton()
+    
+    
     private let textColorFroNormal: UIColor = theme.CMGray333333
     private let textFont: UIFont = UIFont.systemFontOfSize(15)
-    private let bottomLineView: UIView = UIView()
+    private let bottomHighlightLineView: UIView = UIView()
+    private let bottomLineView:UIView = UIView()
     private var selectedBtn: UIButton?
     weak var delegate: DoubleTextViewDelegate?
     
@@ -36,8 +39,10 @@ class DoubleTextView: UIView {
     }
     
     private func setBottomLineView() {
-        bottomLineView.backgroundColor = theme.CMNavBGColor
+        bottomHighlightLineView.backgroundColor = theme.CMNavBGColor
+        bottomLineView.backgroundColor = theme.CMGrayLight
         addSubview(bottomLineView)
+        addSubview(bottomHighlightLineView)
     }
     
     private func setButton(button: UIButton, title: String, tag: Int) {
@@ -52,15 +57,17 @@ class DoubleTextView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         let btnW = CGFloat( (width-30) / 3 )
         leftTextButton.frame = CGRectMake(15, 0, btnW, height)
-        leftTextButton.contentHorizontalAlignment = .Left
+        leftTextButton.contentHorizontalAlignment = .Center
         centerTextButton.frame = CGRectMake(btnW+15, 0, btnW, height)
         centerTextButton.contentHorizontalAlignment = .Center
         rightTextButton.frame = CGRectMake(btnW*2+15, 0, btnW, height)
-        rightTextButton.contentHorizontalAlignment = .Right
-        bottomLineView.frame = CGRectMake(15, height - 2, btnW/2, 1)
+        rightTextButton.contentHorizontalAlignment = .Center
+        //初始选择第一个按钮
+        bottomHighlightLineView.frame = CGRectMake(15+4, height - 2, btnW-8, 1)
+        bottomLineView.frame = CGRectMake(self.x, height - 2, self.width, 1)
+        
     }
     
     func titleButtonClick(sender: UIButton) {
@@ -74,14 +81,15 @@ class DoubleTextView: UIView {
     func bottomViewScrollTo(index: Int) {
         var offset: CGFloat!
         if index == 0 {
-            offset = 15
+            offset = 15 + 4
+            //offset = leftTextButton.titleLabel?.frame.origin.x
         }else if index == 1 {
-            offset = 15 + leftTextButton.width * 1.25
+            offset = 15 + leftTextButton.width + 4
         }else if index == 2 {
-            offset = 15 + leftTextButton.width * 2.5
+            offset = 15+4 + 2*leftTextButton.width
         }
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.bottomLineView.frame.origin.x = offset
+            self.bottomHighlightLineView.frame.origin.x = offset
         })
     }
     

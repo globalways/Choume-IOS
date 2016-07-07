@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "CMContext.(login(CMContext) -&gt; (cancelled : () -&gt; ()?, completion : () -&gt; ()?) -&gt; ()).(closure #3).(closure #1):CMContext.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "json[APIClient.cfUser].toCfUser()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMNewProjectVC.(saveNewProject() -&gt; ()).(closure #1):CMNewProjectVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UIImageJPEGRepresentation(image!, 1.0)==nil">
+            </PersistentString>
+            <PersistentString
+               value = "image == nil">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AppDelegate.tryToLoadUserInfo() -&gt; ():AppDelegate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Mapper&lt;CfUser&gt;().map(&quot;sfsd&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProjectPreviewViewController.tableView(UITableView, numberOfRowsInSection : Int) -&gt; Int:ProjectPreviewViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentProject">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMProjectManagerTVC.tableView(UITableView, didSelectRowAtIndexPath : NSIndexPath) -&gt; ():CMProjectManagerTVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentProject.invests">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "JoinProjectCell.(toNewInvest in _17D6E54FE32ACB5A65090DA20FE5D370)(UIButton) -&gt; ():JoinProjectCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "delegate">
+            </PersistentString>
+            <PersistentString
+               value = "reward">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMNewProjectVC.saveNewProject() -&gt; ():CMNewProjectVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "assets">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "StartedVC.(sendRequest(Int) -&gt; ()).(closure #1):StartedVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.projects">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CMMyMessageTVC.loadMessages() -&gt; ():CMMyMessageTVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "r.content">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProjectPreviewViewController.(loadRewards() -&gt; ()).(closure #1):ProjectPreviewViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.currentProject">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProjectPreviewViewController.(configureViews in _A15FF7825CDD2D6BE4A8CCEE011CB3F0)() -&gt; ():ProjectPreviewViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentProject">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProjectPreviewViewController.tableView(UITableView, cellForRowAtIndexPath : NSIndexPath) -&gt; UITableViewCell:ProjectPreviewViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "indexPath.row">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "APIClient.raiseCfProject(String!, project : CfProject, success : (JSON) -&gt; (), failure : (NSError) -&gt; ()) -&gt; ():CMAPIClient.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Mapper().toJSONString(project, prettyPrint: true)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

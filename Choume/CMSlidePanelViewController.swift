@@ -22,7 +22,7 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     var delegate: ToggleLeftPanelDelegate!
-    private let cellTitleArray = ["我的发起", "我的参与", "我的收藏", "我的财富","我的消息","账户设置","登出账户"]
+    private let cellTitleArray = ["我的发起", "我的参与", "我的收藏", "我的财富","我的消息","系统设置","登出账户"]
     private let cellTitleImage = ["Icon-Cloud","Icon-People","Icon-Star","Icon-Card","Icon-Msg","Icon-Setting","Icon-Out"]
     private var loginedViews: [UIView] = []
     private var noLoginView: CMSlidePanelNoLogin!
@@ -40,6 +40,8 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
         noLoginView = CMSlidePanelNoLogin.instanceFromNib() as! CMSlidePanelNoLogin
         noLoginView.frame = CGRectMake(0, 0, kExpandedOffSet, AppHeight)
         noLoginView.delegate = self
+        
+        //如果内存中没有用户数据（本地加载失败），则显示为用户没有登录
         if CMContext.currentUser == nil {
             showNoLoginView()
         }
@@ -92,6 +94,7 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    ///显示未登录界面
     func showNoLoginView() {
         for var i=0;i<loginedViews.count;i++ {
             loginedViews[i].hidden = true
@@ -99,6 +102,7 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
         view.addSubview(noLoginView)
     }
     
+    ///隐藏未登录界面
     func hideNoLoginView() {
         noLoginView.hidden = true
         for var i=0;i<loginedViews.count;i++ {
@@ -106,7 +110,7 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    //未登陆界面view被点击了
+    ///未登陆界面view被点击了
     func nologinView(noLoginView: CMSlidePanelNoLogin, didTapView sender: UITapGestureRecognizer) {
         switch sender.view?.tag {
         case noLoginView.LOGINTAP?:
@@ -127,6 +131,7 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
         CMContext.sharedInstance.login(cancelled: {
             self.delegate?.removeFrontBlurView()
             }, completion: {
+                //登录完成后显示登录后界面
                 self.hideNoLoginView()
                 CMContext.sharedInstance.configureCurrentUserAvatar(self.userProfileImage, label: self.userNameLabel)
                 self.delegate?.removeFrontBlurView()
@@ -364,6 +369,10 @@ class SlidePanelViewController: UIViewController, UITableViewDataSource, UITable
             return
         case 3:
             destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.walletNav)
+            self.navigationController?.showViewController(destinationVC, sender: nil)
+            return
+        case 4:
+            destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.messageNav)
             self.navigationController?.showViewController(destinationVC, sender: nil)
             return
         case 5:

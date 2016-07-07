@@ -1,15 +1,20 @@
 import UIKit
 import SwiftyJSON
-import JSONJoy
+
 
 class CMContext {
     static let sharedInstance = CMContext()
+    static let MSB = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+    static let SlidePanelSB = UIStoryboard(name: "IBBSSlidePanel", bundle: NSBundle.mainBundle())
     
     private init(){}
     
     private let kNodesId = "kNodes"
+    ///deprecated. now save tel & pwd to local
     private let kLoginFeedbackJson = "kLoginFeedbackJson"
     private let kLoginFeedbackJsonToken = "kLoginFeedbackJsonToken"
+    private let kLoginFeedbackUserTel = "kLoginFeedbackUserTel"
+    private let kLoginFeedbackUserPwd = "kLoginFeedbackUserPwd"
 
     static var currentUser: CfUser?
     
@@ -39,7 +44,7 @@ class CMContext {
         }
     }
     
-    
+    ///用户登录对话框
     func login(cancelled cancelled: (() -> Void)?, completion: (() -> Void)?) {
         var username, password: UITextField!
       
@@ -59,12 +64,13 @@ class CMContext {
         let okAction = UIAlertAction(title: BUTTON_OK, style: .Default) { (action: UIAlertAction) -> Void in
             let encryptedPasswd = password.text?.MD5()
             let token = CMContext.sharedInstance.getToken()
-            APIClient.sharedInstance.userLogin(token,userID: username.text!, passwd: encryptedPasswd!, success: { (json) -> Void in
+            //不使用token登录
+            APIClient.sharedInstance.userLogin(nil, userID: username.text!, passwd: encryptedPasswd!, success: { (json) -> Void in
                 print(json)
                 // something wrong , alert!!
-                let code = json[APIClient.RESP][APIClient.CODE].intValue
-                if APIStatus(rawValue: code) != .OK {
-                    let description = APIStatus(rawValue: code)?.description()
+                //let code = json[APIClient.RESP][APIClient.CODE].intValue
+                if json.respStatus() != .OK {
+                    let description = json.respStatus().description()
                     let alert = CMAlertController(title: ERROR_MESSAGE, message: description, preferredStyle: UIAlertControllerStyle.Alert)
                     let cancelAction = UIAlertAction(title: TRY_AGAIN, style: .Cancel, handler: { (_) -> Void in
                         self.login(cancelled: nil, completion: nil)
@@ -75,7 +81,8 @@ class CMContext {
                     UIApplication.topMostViewController()?.presentViewController(alert, animated: true, completion: nil)
                 }else{
                     // 保存信息到本地
-                    CMContext.sharedInstance.saveLoginData(json[APIClient.cfUser].object)
+                    CMContext.sharedInstance.saveUserTel((json[APIClient.cfUser].toCfUser()?.user?.tel)!)
+                    CMContext.sharedInstance.saveUserEncryptedPwd(encryptedPasswd!)
                     CMContext.sharedInstance.saveToken(json[APIClient.TOKEN].object)
                     // 保存用户对象
                     if let cfUser = json[APIClient.cfUser].toCfUser() {
@@ -107,16 +114,16 @@ class CMContext {
 
     func logout(completion completion: (() -> Void)?){
         
-        self.saveLoginData("")
-        self.saveToken("")
-        CMContext.currentUser = nil
-        
         let alertController = CMAlertController(title: "", message: SURE_TO_LOGOUT, preferredStyle: .Alert)
         let cancelAction = UIAlertAction(title: BUTTON_CANCEL, style: .Default, handler: nil)
         let okAction = UIAlertAction(title: BUTTON_OK, style: .Default) { (_) -> Void in
             
+            CMContext.currentUser = nil
             let userDefaults = NSUserDefaults.standardUserDefaults()
-            userDefaults.removeObjectForKey(self.kLoginFeedbackJson)
+            userDefaults.removeObjectForKey(self.kLoginFeedbackJsonToken)
+            userDefaults.removeObjectForKey(self.kLoginFeedbackUserPwd)
+            userDefaults.removeObjectForKey(self.kLoginFeedbackUserTel)
+            
             
             if let completionHandler = completion {
                 completionHandler()
@@ -129,12 +136,30 @@ class CMContext {
     }
     
     
+    ///Deprecated method. now save tel & pwd
     func saveLoginData(data: AnyObject) {
         print("----\(data)-----")
         let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setObject(NSKeyedArchiver.archivedDataWithRootObject(data), forKey: kLoginFeedbackJson)
         userDefaults.synchronize()
     }
+    
+    ///Save user tel locally
+    func saveUserTel(_ tel: AnyObject) {
+        print("save tel:----\(tel)-----")
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setObject(NSKeyedArchiver.archivedDataWithRootObject(tel), forKey: kLoginFeedbackUserTel)
+        userDefaults.synchronize()
+    }
+    
+    func saveUserEncryptedPwd(_ pwd: AnyObject){
+        print("save pwd:----\(pwd)-----")
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setObject(NSKeyedArchiver.archivedDataWithRootObject(pwd), forKey: kLoginFeedbackUserPwd)
+        userDefaults.synchronize()
+    }
+    
+    
     
     func saveToken(data: AnyObject) {
         print("save token:----\(data)-----")
@@ -152,6 +177,25 @@ class CMContext {
         
         return nil
     }
+    
+    func getTel() -> String? {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if let data = userDefaults.objectForKey(kLoginFeedbackUserTel) {
+            let token = NSKeyedUnarchiver.unarchiveObjectWithData(data as! NSData)
+            return String(token!)
+        }
+        return nil
+    }
+    
+    func getPwd() -> String? {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if let data = userDefaults.objectForKey(kLoginFeedbackUserPwd) {
+            let token = NSKeyedUnarchiver.unarchiveObjectWithData(data as! NSData)
+            return String(token!)
+        }
+        return nil
+    }
+    
     
     func getToken() -> String? {
         let userDefaults = NSUserDefaults.standardUserDefaults()

@@ -7,6 +7,7 @@
 
 import UIKit
 
+// 未使用 由CMFourTargetView替代
 class FourImageLabelView: UIView {
     private let firstBtn: NoHighlightButton = NoHighlightButton()
     private let secondBtn: NoHighlightButton = NoHighlightButton()

@@ -74,7 +74,7 @@ class CMMessagesViewController: BaseViewController {
             }else{
                 
                 self.presentLoginViewControllerIfNotLogin(alertMessage: LOGIN_TO_READ_MESSAGE, completion: { () -> Void in
-                    self.automaticPullingDownToRefresh()
+//                    self.automaticPullingDownToRefresh()
                     self.sendRequest()
                 })
             }
@@ -83,18 +83,18 @@ class CMMessagesViewController: BaseViewController {
         }
         
     }
-    
-    override func updateTheme() {
-        super.updateTheme()
-        if let cells = self.tableView?.visibleCells as? [IBBSMessageTableViewCell] {
-            for index in 0 ..< cells.count {
-                let cell = cells[index]
-                if cell.isRead == 0 {
-                    cell.isMessageRead?.changeColorForImageOfImageView(CUSTOM_THEME_COLOR.lighterColor(0.7))
-                }
-            }
-        }
-    }
+//BaseViewController禁了updateTheme - wyp
+//    override func updateTheme() {
+//        super.updateTheme()
+//        if let cells = self.tableView?.visibleCells as? [IBBSMessageTableViewCell] {
+//            for index in 0 ..< cells.count {
+//                let cell = cells[index]
+//                if cell.isRead == 0 {
+//                    cell.isMessageRead?.changeColorForImageOfImageView(CUSTOM_THEME_COLOR.lighterColor(0.7))
+//                }
+//            }
+//        }
+//    }
     
     func removeViews(){
         self.draggableBackground?.removeFromSuperview()

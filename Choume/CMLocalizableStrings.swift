@@ -63,3 +63,15 @@ let REWARD_HAS_NO_TITLE        = NSLocalizedString("项目回报没有标题", c
 let REWARD_HAS_NO_DESC         = NSLocalizedString("项目回报没有描述", comment: "")
 let REWARD_HAS_NO_SUPPORT_TYPE = NSLocalizedString("项目回报没有支持类型", comment: "")
 let REWARD_NEED_LIMIT          = NSLocalizedString("项目回报没有合法的份数限制", comment: "")
+
+//用户地址
+let ADDR_NEED_CONTACT          = NSLocalizedString("收货人", comment: "")
+let ADDR_NEED_TEL              = NSLocalizedString("联系方式", comment: "")
+let ADDR_NEED_AREA             = NSLocalizedString("请选择地区", comment: "")
+let ADDR_NEED_DETAIL           = NSLocalizedString("详细地址", comment: "")
+let ADDR_NEW_OK                = NSLocalizedString("保存地址成功", comment: "")
+let ADDR_DELETE_OK             = NSLocalizedString("删除地址成功", comment: "")
+let ADDR_NEW_FAILD             = NSLocalizedString("创建地址失败", comment: "")
+let ADDR_DELETE_FAILD          = NSLocalizedString("删除地址失败", comment: "")
+
+

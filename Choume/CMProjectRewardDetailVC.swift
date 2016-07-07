@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import KMPlaceholderTextView
 
 protocol CMProjectRewardDetailVCDelegate{
     func onSetProjectReward(reward: CfProjectReward, forIndex: Int)
@@ -17,10 +18,9 @@ class CMProjectRewardDetailVC: UITableViewController {
 
     @IBOutlet weak var needSupportDetailLabel: UILabel!
     
-    @IBOutlet weak var rewardTitle: UITextField!
-    @IBOutlet weak var rewardDesc: UITextField!
-    @IBOutlet weak var rewardContact: UITextField!
-    @IBOutlet weak var rewardTel: UITextField!
+    @IBOutlet weak var rewardDesc: KMPlaceholderTextView!
+    @IBOutlet weak var switchNeedAddr: UISwitch!
+    @IBOutlet weak var switchNeedTel: UISwitch!
     @IBOutlet weak var rewardLimit: UITextField!
     //回报方式的索引
     var rewardIndex: Int?
@@ -35,10 +35,17 @@ class CMProjectRewardDetailVC: UITableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        rewardDesc.layer.borderColor = self.tableView.separatorColor?.CGColor
+        rewardDesc.layer.borderWidth = 0.5
+        rewardDesc.layer.cornerRadius = 5
+        
         if rewardIndex != -1 {
             rewardDesc.text = currentReward?.desc
             rewardLimit.text = currentReward?.limitedCount?.stringValue
             needSupportText = (currentReward?.supportType?.desc((currentReward?.amount)!))!
+            
+            switchNeedAddr.on = (currentReward?.needAddr)!
+            switchNeedTel.on  = (currentReward?.needPhone)!
         }
     }
     
@@ -74,7 +81,10 @@ class CMProjectRewardDetailVC: UITableViewController {
             return
         }
         
-        if let limit = rewardLimit.text?.uint64Value {
+        currentReward?.needAddr = switchNeedAddr.on
+        currentReward?.needPhone = switchNeedTel.on
+        
+        if let limit = rewardLimit.text?.integerValue {
             currentReward?.limitedCount = limit
         }else{
             self.cmAlert("", msg: REWARD_NEED_LIMIT)
@@ -94,11 +104,15 @@ class CMProjectRewardDetailVC: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return 5
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.1
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -112,7 +126,7 @@ class CMProjectRewardDetailVC: UITableViewController {
 }
 
 extension CMProjectRewardDetailVC: CMProjectRewardSupportTypeVCDelegate {
-    func supportTypeAndCount(type: CfProjectSupportType, count: UInt64){
+    func supportTypeAndCount(type: CfProjectSupportType, count: Int){
         currentReward?.supportType = type
         currentReward?.amount = count
         needSupportText = type.desc(count)

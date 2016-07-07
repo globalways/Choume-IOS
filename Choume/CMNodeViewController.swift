@@ -90,7 +90,7 @@ class CMNodeViewController: BaseViewController, UIGestureRecognizerDelegate {
     }
     
     func configureGestureRecognizer(){
-        let edgeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: "toggleSideMenu:")
+        let edgeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(CMNodeViewController.toggleSideMenu(_:)))
         edgeGestureRecognizer.edges = UIRectEdge.Right
         self.view.addGestureRecognizer(edgeGestureRecognizer)
     }
@@ -157,7 +157,7 @@ extension CMNodeViewController {
         dispatch_after(popTime, dispatch_get_main_queue()) { () -> Void in
             self.tableView.reloadData()
             self.page = 1
-            self.gearRefreshControl?.endRefreshing()
+//            self.gearRefreshControl?.endRefreshing()
         }
         
     }

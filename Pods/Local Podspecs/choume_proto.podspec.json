@@ -1,0 +1,37 @@
+{
+  "name": "choume_proto",
+  "version": "0.0.1",
+  "license": "no",
+  "platforms": {
+    "ios": "6.0",
+    "osx": "10.8"
+  },
+  "prepare_command": "protoc --objc_out=. --objcgrpc_out=. *.proto",
+  "subspecs": [
+    {
+      "name": "Messages",
+      "source_files": "*.pbobjc.{h,m}",
+      "header_mappings_dir": ".",
+      "requires_arc": false,
+      "dependencies": {
+        "Protobuf": [
+          "~> 3.0.0-alpha-3"
+        ]
+      }
+    },
+    {
+      "name": "Services",
+      "source_files": "*.pbrpc.{h,m}",
+      "header_mappings_dir": ".",
+      "requires_arc": true,
+      "dependencies": {
+        "gRPC": [
+          "~> 0.5"
+        ],
+        "choume_proto/Messages": [
+
+        ]
+      }
+    }
+  ]
+}

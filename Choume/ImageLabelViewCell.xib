@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,25 +15,21 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="呵呵呵" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XVz-uI-TQx">
-                        <rect key="frame" x="17" y="65" width="36" height="14.5"/>
-                        <animations/>
+                        <rect key="frame" x="17" y="65" width="36" height="15"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon-lezi" translatesAutoresizingMaskIntoConstraints="NO" id="Yz8-gb-fAC">
                         <rect key="frame" x="13" y="13" width="44" height="44"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="44" id="diJ-VD-3Pc"/>
                             <constraint firstAttribute="width" constant="44" id="i2c-DW-0Dc"/>
                         </constraints>
                     </imageView>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <animations/>
             <constraints>
                 <constraint firstItem="XVz-uI-TQx" firstAttribute="top" secondItem="Yz8-gb-fAC" secondAttribute="bottom" constant="8" id="EDB-mx-N9X"/>
                 <constraint firstItem="XVz-uI-TQx" firstAttribute="centerX" secondItem="wdR-aA-EZm" secondAttribute="centerX" id="HGz-iS-Pq3"/>

@@ -4,6 +4,11 @@
 #import "ZSSRichTextEditor.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import <Qiniu/QiniuSDK.h>
+#import "Pingpp.h"
+#import <RongIMLib/RongIMLib.h>
+
+@import GSKStretchyHeaderView;
+
 //#import <Choume/Common.pbobjc.h>
 //#import <Choume/OutsouringCrowdfunding.pbobjc.h>
 //#import <Choume/UserApp.pbobjc.h>

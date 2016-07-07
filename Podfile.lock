@@ -21,26 +21,84 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Alamofire (2.0.2)
+  - ASProgressPopUpView (0.8)
+  - DKImagePickerController (3.1.3):
+    - DKImagePickerController/Camera (= 3.1.3)
+    - DKImagePickerController/ImageManager (= 3.1.3)
+  - DKImagePickerController/Camera (3.1.3)
+  - DKImagePickerController/ImageManager (3.1.3)
+  - DLRadioButton (1.4.8)
+  - DZNEmptyDataSet (1.8.1)
+  - FLAnimatedImage (1.0.12)
   - GearRefreshControl (0.2.1)
+  - GMStepper (1.2.0)
+  - GSKStretchyHeaderView (0.10.1):
+    - KVOController (~> 1.1)
   - HappyDNS (0.2.3)
-  - JSONJoy-Swift (1.0.0)
+  - JSQWebViewController (3.0.0)
   - Kingfisher (1.6.0)
-  - ProtocolBuffers-Swift (2.3)
+  - KMPlaceholderTextView (1.2.0)
+  - KVOController (1.1.0)
+  - MJRefresh (3.1.0)
+  - NJKWebViewProgress (0.2.3):
+    - NJKWebViewProgress/Core (= 0.2.3)
+    - NJKWebViewProgress/ProgressView (= 0.2.3)
+  - NJKWebViewProgress/Core (0.2.3)
+  - NJKWebViewProgress/ProgressView (0.2.3)
+  - NYTPhotoViewer (1.1.0):
+    - NYTPhotoViewer/AnimatedGifSupport (= 1.1.0)
+    - NYTPhotoViewer/Core (= 1.1.0)
+  - NYTPhotoViewer/AnimatedGifSupport (1.1.0):
+    - FLAnimatedImage (~> 1.0.8)
+    - NYTPhotoViewer/Core
+  - NYTPhotoViewer/Core (1.1.0)
+  - ObjectMapper (1.1.5)
+  - Pingpp/Alipay (2.1.4):
+    - Pingpp/Core
+  - Pingpp/Core (2.1.4)
+  - Pingpp/Wx (2.1.4):
+    - Pingpp/Core
   - Qiniu (7.0.16):
     - AFNetworking (~> 2.0)
     - HappyDNS (~> 0.2)
+  - RNLoadingButton-Swift (3.1.0)
+  - RongCloudIMLib (2.5.0)
+  - SDWebImage (3.7.5):
+    - SDWebImage/Core (= 3.7.5)
+  - SDWebImage/Core (3.7.5)
+  - SnapKit (0.15.0)
   - SVProgressHUD (1.1.3)
+  - SVWebViewController (1.0)
   - SwiftyJSON (2.3.0)
+  - SZTextView (1.2.2)
 
 DEPENDENCIES:
   - Alamofire (~> 2.0)
+  - ASProgressPopUpView
+  - DKImagePickerController
+  - DLRadioButton (~> 1.4)
+  - DZNEmptyDataSet
   - GearRefreshControl (~> 0.2)
-  - JSONJoy-Swift (~> 1.0.0)
+  - GMStepper
+  - GSKStretchyHeaderView
+  - JSQWebViewController
   - Kingfisher (~> 1.6)
-  - ProtocolBuffers-Swift
+  - KMPlaceholderTextView (~> 1.2.0)
+  - MJRefresh
+  - NJKWebViewProgress
+  - NYTPhotoViewer (~> 1.1.0)
+  - ObjectMapper (~> 1.1)
+  - Pingpp/Alipay (~> 2.1.0)
+  - Pingpp/Wx (~> 2.1.0)
   - Qiniu (~> 7.0)
+  - RNLoadingButton-Swift
+  - RongCloudIMLib (~> 2.5.0)
+  - SDWebImage (~> 3.7)
+  - SnapKit (~> 0.15.0)
   - SVProgressHUD
+  - SVWebViewController
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`)
+  - SZTextView
 
 EXTERNAL SOURCES:
   SwiftyJSON:
@@ -54,13 +112,32 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   Alamofire: 8edbab00802a752bb5240cc2abe70e7e881488ad
+  ASProgressPopUpView: 945c19297da09a625db48a5a37cabd7756916b9b
+  DKImagePickerController: 5ad3a065e65287c1584e4250e378f99102e2753e
+  DLRadioButton: 8fe4865b3ea8a5236e1d114dd283dd0884d3dc46
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   GearRefreshControl: 57e228199e14a4c2c7fe0ab00b673277fdef8653
+  GMStepper: e743b5648ae5fe877e33d3b51b5aa2df432f179d
+  GSKStretchyHeaderView: 370cfa088b94bab7f9740f7900be3c3b4f0a302e
   HappyDNS: 6d85942e64c28b4fa61f8c76580398f52d6d1d11
-  JSONJoy-Swift: 3e8129c282470614da69759208e9c923732f6cb4
+  JSQWebViewController: eaa6bd68d9e1426ae25ade99c9bbde4c6cdd4120
   Kingfisher: 3308d487e5c2a0fba9c1054fc3b8c45923e03c40
-  ProtocolBuffers-Swift: 6c80d3eae9baa139a0d6840df452e287dad0a82c
+  KMPlaceholderTextView: cae8ee889bd38d20587eee6b2623b8218f31b8f5
+  KVOController: 321b5fc59300fcaabd42c0f679baa7a27efbb2fd
+  MJRefresh: 743e6404967d1c2c688472ea3ecfde247d872db4
+  NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
+  NYTPhotoViewer: e80e8767f3780d2df37c6f72cbab15d6c7232911
+  ObjectMapper: 528b1a6677a6acac7747edd508576983e76a9148
+  Pingpp: 08415163eb1791bc07d7d939f1648d2e36a30eda
   Qiniu: 51a8702cddc02b50867e10cef99291b9a8a006b1
+  RNLoadingButton-Swift: 153bb6e160ec153c1988b7852fdf4c8fa31e5e0a
+  RongCloudIMLib: 9934b9baf3e35dcaf2254a6b1e617af0eec065da
+  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+  SnapKit: 4962eed2ee18e48cbd2b2292fffc57efe7235f87
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
+  SVWebViewController: c36dda7326e81fcae0abf5d02bf7bbf7e41be901
   SwiftyJSON: 8d6b61a70277ef2a5d710d372e06e7e2d87fb9e4
+  SZTextView: 3a81174dce0710a9ab069bc73a813e6df53b9c82
 
 COCOAPODS: 0.39.0

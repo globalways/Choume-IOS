@@ -158,9 +158,31 @@ extension CMMainViewController {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let destinationVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.startedNav) as! ProjectListNavViewController
-        
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ImageLabelViewCell
         destinationVC.setType(.Default,title: cell.label.text!)
+        if collectionView == firstCollectionView {
+            var category = CrowdFundingCategory.INVALID_CFC
+            if indexPath.section == 0 {
+                category = CrowdFundingCategory(rawValue: indexPath.row + 1)!
+            }
+            destinationVC.setCategoryAndTag(category, tag: CfProjectTag.INVALID_CFPT)
+        }
+        
+        if collectionView == secondCollectionView {
+            let index = indexPath.section * 3 + indexPath.row
+            var tag = CfProjectTag.INVALID_CFPT
+            if index == 0 || index == 1 {
+                tag = CfProjectTag.LIMIT_TIME_CFPT
+            }
+            if index == 2 || index == 3 {
+                tag = CfProjectTag.QUESTION_CFPT
+            }
+            if index == 4 || index == 5 {
+                tag = CfProjectTag.HOT_CFPT
+            }
+            destinationVC.setCategoryAndTag(CrowdFundingCategory.INVALID_CFC, tag: tag)
+        }
+        
         self.navigationController?.showViewController(destinationVC, sender: nil)
 
     }

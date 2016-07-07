@@ -19,7 +19,10 @@ struct MainStoryboard {
         static let cmHelpDetailVC              = "cmHelpDetailVC"
         static let cmNewProjectVC              = "cmNewProjectVC"
         static let cmProjectReturnDetailVC     = "cmProjectReturnDetailVC"
-
+        static let cmNewInvestCV               = "cmNewInvestCV"
+        static let cmUserAddressTVC            = "cmUserAddressTVC"
+        static let cmWebVC                     = "cmWebVC"
+        static let cmProjectDetailVC           = "cmProjectDetailVC"
     }
 
     struct CellIdentifiers {
@@ -31,9 +34,16 @@ struct MainStoryboard {
         static let userAddressCell             = "userAddressCell"
         static let cmProjectCell               = "cmProjectCell"
         static let joinProjectCell             = "joinProjectCell"
+        static let cmProjectCommentCell        = "cmProjectCommentCell"
         static let imageLabelViewCell          = "imageLabelViewCell"
         //new project
         static let cmNameFieldCell             = "cmNameFieldCell"
+        static let cmTextImageCell             = "cmTextImageCell"
+        static let cmCVImageCell               = "cmCVImageCell"
+        static let cmFourRadioBtnCell          = "cmFourRadioBtnCell"
+        //项目管理
+        static let cmProjectInvestCell         = "cmProjectInvestCell"
+        static let cmProjectRewardCell         = "cmProjectRewardCell"
     }
 
     struct CollectionCellIdentifiers {
@@ -51,9 +61,16 @@ struct MainStoryboard {
         static let userAddressCell             = "UserAddressCell"
         static let cmProjectCell               = "CMProjectCell"
         static let joinProjectCell             = "JoinProjectCell"
+        static let cmProjectCommentCell        = "CMProjectCommentCell"
         static let imageLabelViewCell          = "ImageLabelViewCell"
         //new project 
         static let cmNameFieldCell             = "CMNameFieldCell"
+        static let cmTextImageCell             = "CMTextImageCell"
+        static let cmCVImageCell               = "CMCVImageCell"
+        static let cmFourRadioBtnCell          = "CMFourRadioBtnCell"
+        //项目管理
+        static let cmProjectInvestCell         = "CMProjectInvestCell"
+        static let cmProjectRewardCell         = "CMProjectRewardCell"
     }
 
     struct SegueIdentifiers {
@@ -82,9 +99,25 @@ struct SlidePanelStoryboard {
         static let settingNav      = "settingNavVC"
         static let userInfoNav     = "myUserInfoNavgationController"
         static let userProfileVC   = "userProfileVC"
-        //钱包充值
-        static let cmWalletRechargeVC          = "cmWalletRechargeVC"
+        
+        //项目管理
+        static let cmProjectManagerTVC          = "cmProjectManagerTVC"
+        static let cmProjectManagerSupporterTVC = "cmProjectManagerSupporterTVC"
+        static let cmProjectManagerRewardTVC    = "cmProjectManagerRewardTVC"
+        static let cmProjectInvestDetailVC      = "cmProjectInvestDetailVC"
+        
+        //钱包
+        static let cmWalletRechargeVC           = "cmWalletRechargeVC"
+        static let cmWalletExchangeVC           = "cmWalletExchangeVC"
     }
+}
+
+struct NewProjectSB {
+    static let step2MoneyTC        = "step2MoneyTC"
+    static let step2PeopleTC       = "step2PeopleTC"
+    static let step2GoodsTC        = "step2GoodsTC"
+    static let step2PartnerTC      = "step2PartnerTC"
+    
 }
 
 

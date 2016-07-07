@@ -1,44 +1,61 @@
 //
-//  UserAddressTableViewController.swift
+//  CMUserAddressTVC.swift
 //
 
 import UIKit
 
-class UserAddressTableViewController: UITableViewController {
+class CMUserAddressTVC: UITableViewController {
 
     var addressList: [UserAddressModel] = []
     
+    // action 代表启动本vc的目的
+    // 100 = 个人中心-地址管理, 101 = 参与项目-选择地址
+    var action = 100
+    
+    override func viewWillAppear(animated: Bool) {
+        addressList.removeAll()
+        if let addrs = CMContext.currentUser?.user!.addrs {
+            for i in 0 ... addrs.count - 1{
+                let addr: UserAddress = addrs[i]
+                let uam = UserAddressModel(name: addr.name!, phone: addr.contact!, address: addr.area! + " " + addr.detail!)
+                addressList.append(uam)
+            }
+            self.tableView.reloadData()
+        }
+        self.navigationItem.leftBarButtonItem?.target = self
+        self.navigationItem.leftBarButtonItem?.action = #selector(CMUserAddressTVC.finish)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        
-        
-        let address1 = UserAddressModel(name: "我是王八蛋",phone: "135213462234",address: "xxxxxxx")
-        let address2 = UserAddressModel(name: "lisi", phone: "13275847509", address: "addresslisi")
-        let address3 = UserAddressModel(name: "wanger", phone: "15828525253", address: "address_wanger")
-        
-        addressList.append(address1)
-        addressList.append(address2)
-        addressList.append(address3)
-        
         tableView.registerNib(UINib(nibName: MainStoryboard.NibIdentifiers.userAddressCell, bundle: nil), forCellReuseIdentifier: MainStoryboard.CellIdentifiers.userAddressCell)
-        
-        //测试custom cell
-        //tableView.registerClass(vDataEntryCell.classForCoder(), forCellReuseIdentifier: "cell")
+        if action == 101 {
+            self.navigationItem.title = "选择地址"
+        }
     }
+    
+    func finish(sender: UIBarButtonItem) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
+    
+    
+    @IBAction func cancelAddressDetail(segue: UIStoryboardSegue){}
 
+}
+
+extension CMUserAddressTVC {
+    // MARK: - Table view data source
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if addressList.count != 0 && section == 0{
             return addressList.count
@@ -47,13 +64,13 @@ class UserAddressTableViewController: UITableViewController {
         }
         return 0
     }
-
+    
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-        if let cell = tableView.dequeueReusableCellWithIdentifier(MainStoryboard.CellIdentifiers.userAddressCell, forIndexPath: indexPath) as? UserAddressCell {
-            cell.loadDataToCell(addressList[indexPath.row])
-            return cell
+            if let cell = tableView.dequeueReusableCellWithIdentifier(MainStoryboard.CellIdentifiers.userAddressCell, forIndexPath: indexPath) as? UserAddressCell {
+                cell.loadDataToCell(addressList[indexPath.row])
+                return cell
             }
         }else if indexPath.section == 1{
             var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
@@ -64,108 +81,21 @@ class UserAddressTableViewController: UITableViewController {
             return cell
         }
         
-
-        // Configure the cell...
-
         return UITableViewCell()
     }
-    // hide table view section header - by wyp
+    
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat.min
     }
     
-    @IBAction func cancelAddressDetail(segue: UIStoryboardSegue){
-        
-    }
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
-    class vDataEntryCell: UITableViewCell
-    {
-        
-        //-----------------
-        // MARK: PROPERTIES
-        //-----------------
-        
-        //Locals
-        var textField : UITextField = UITextField()
-        
-        //-----------------
-        // MARK: VIEW FUNCTIONS
-        //-----------------
-        
-        ///------------
-        //Method: Init with Style
-        //Purpose:
-        //Notes: This will NOT get called unless you call "registerClass, forCellReuseIdentifier" on your tableview
-        ///------------
-        override init(style: UITableViewCellStyle, reuseIdentifier: String!)
-        {
-            //First Call Super
-            super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        // 参与项目选择了地址
+        if action == 101 {
+            let dict = ["addr": CMContext.currentUser!.user!.addrs![indexPath.row]]
+            NSNotificationCenter.defaultCenter().postNotificationName(kNewInvestDidSelectedAddr, object: nil, userInfo: dict)
+            self.navigationController?.popViewControllerAnimated(true)
+        }else {
             
-            //Initialize Text Field
-            self.textField = UITextField(frame: CGRect(x: 119.00, y: 9, width: 216.00, height: 31.00));
-            
-            //Add TextField to SubView
-            self.addSubview(self.textField)
-        }
-        
-        
-        ///------------
-        //Method: Init with Coder
-        //Purpose:
-        //Notes: This function is apparently required; gets called by default if you don't call "registerClass, forCellReuseIdentifier" on your tableview
-        ///------------
-        required init(coder aDecoder: NSCoder)
-        {
-            //Just Call Super
-            super.init(coder: aDecoder)!
         }
     }
-
 }

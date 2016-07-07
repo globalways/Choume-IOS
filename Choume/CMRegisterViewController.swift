@@ -1,6 +1,5 @@
 import UIKit
 import SwiftyJSON
-import JSONJoy
 
 
 class CMRegisterViewController: UIViewController, UITextFieldDelegate {
@@ -137,14 +136,14 @@ class CMRegisterViewController: UIViewController, UITextFieldDelegate {
         }
         
         // everything is fine, ready to go
-        var encryptedPasswd = (passwd as! String).MD5()
+        let encryptedPasswd = (passwd as! String).MD5()
         print(encryptedPasswd)
         APIClient.sharedInstance.userRegister(tel!, username: username!, passwd: encryptedPasswd, success: { (json) -> Void in
             print(json)
             let code = json[APIClient.RESP][APIClient.CODE].intValue
             if code == APIStatus.OK.rawValue {
                 // register successfully!
-                print(JSONDecoder(json[APIClient.cfUser].stringValue))
+                
                 //通过tel登录 username 即tel
                 APIClient.sharedInstance.userLogin(nil,userID: tel!, passwd: encryptedPasswd, success: { (json) -> Void in
                     print(json)

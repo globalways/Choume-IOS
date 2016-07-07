@@ -72,9 +72,14 @@ public let themeColorArray = [
 let rgbColor = UIColor(red:35,green:164,blue:252,alpha:1)
 //copy from small day
 struct theme {
+    static let CMWebViewProgressBar  = UIColor(hex: "#30b48e")
     static let CMNavBGColor: UIColor = UIColor(hex: "#11a2ff")
     static let CMGray333333: UIColor = UIColor(hex: "#333333")
+    static let CMGray666666: UIColor = UIColor(hex: "#666666")
+    /// 白底灰色文字
     static let CMGrayLight: UIColor = UIColor(hex: "#efeff4")
+    /// 加载失败 gary
+    static let CMGraycacaca: UIColor = UIColor(hex: "#cacaca")
     static let CMWhite: UIColor = UIColor.whiteColor()
     static let CMVCBackgroundColor = UIColor.whiteColor()
     ///  APP导航条barButtonItem文字大小

@@ -227,7 +227,7 @@ extension CMDetailViewController {
         dispatch_after(popTime, dispatch_get_main_queue()) { () -> Void in
             self.tableView.reloadData()
             self.page = 1
-            self.gearRefreshControl.endRefreshing()
+//            self.gearRefreshControl.endRefreshing()
         }
         
     }

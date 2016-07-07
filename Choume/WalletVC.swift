@@ -1,19 +1,25 @@
 import UIKit
+import SVProgressHUD
 
 class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var walletTableView: UITableView!
+    @IBOutlet weak var labelPoint: UILabel!
+    @IBOutlet weak var labelCB: UILabel!
+    @IBOutlet weak var labelBalance: UILabel!
     
     let slidePanelStoryboard = UIStoryboard(name: "IBBSSlidePanel", bundle: NSBundle.mainBundle())
     override func viewDidLoad() {
         super.viewDidLoad()
         walletTableView.delegate = self
         walletTableView.dataSource = self
+        loadDataToView()
     }
     
     override func viewWillAppear(animated: Bool) {
         configureView()
+        loadUserWallet()
     }
     
     func configureView(){
@@ -27,9 +33,33 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.navigationBar.translucent = true
     }
     
+    func loadDataToView(){
+        labelPoint.text   = String(CMContext.currentUser!.point)
+        labelCB.text      = String(CMContext.currentUser!.coin)
+        labelBalance.text = Tool.fenToyuan((CMContext.currentUser?.user?.wallet?.amount)!)
+    }
+    
+    func loadUserWallet() {
+        APIClient.sharedInstance.getUserWallet(CMContext.sharedInstance.getToken()!, success: { (result) in
+            if result.respStatus() == .OK {
+                let wallet = result["wallet"].toUserWallet()
+                CMContext.currentUser?.user?.wallet = wallet
+                self.labelBalance.text = Tool.fenToyuan((CMContext.currentUser?.user?.wallet?.amount)!)
+                self.labelPoint.text   = String(CMContext.currentUser!.point)
+                self.labelCB.text      = String(CMContext.currentUser!.coin)
+            }else {
+                self.cmAlert("系统错误", msg: result.respMsg())
+            }
+            }) { (error) in
+                SVProgressHUD.showErrorWithStatus("网络错误\n请检查网络连接是否正常", maskType: .Black)
+        }
+    }
+    
     func rightBarItemClick(sender: UIBarButtonItem) {
-        let helpVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(MainStoryboard.VCIdentifiers.cmHelpDetailVC) as! CMHelpDetailVC
-        self.navigationController?.pushViewController(helpVC, animated: true)
+        //帮助说明
+        //let helpVC = slidePanelStoryboard.instantiateViewControllerWithIdentifier(MainStoryboard.VCIdentifiers.cmHelpDetailVC) as! CMHelpDetailVC
+        //self.navigationController?.pushViewController(helpVC, animated: true)
+        loadUserWallet()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -63,15 +93,11 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if indexPath.row == 0 {
-//            let canNotUseAlert = CMAlertController(title: "", message: "测试账户不支持充值！", preferredStyle:.Alert)
-//            canNotUseAlert.addAction(UIAlertAction(title: "确定", style: .Destructive, handler: nil))
-//            self.presentViewController(canNotUseAlert, animated: true, completion: nil)
             let vc = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.cmWalletRechargeVC) as! CMWalletRechargeVC
             self.navigationController?.pushViewController(vc, animated: true)
         }else {
-            let canNotUseAlert = CMAlertController(title: "", message: "测试账户不支持兑换！", preferredStyle:.Alert)
-            canNotUseAlert.addAction(UIAlertAction(title: "确定", style: .Destructive, handler: nil))
-            self.presentViewController(canNotUseAlert, animated: true, completion: nil)
+            let vc = slidePanelStoryboard.instantiateViewControllerWithIdentifier(SlidePanelStoryboard.VCIdentifiers.cmWalletExchangeVC) as! CMWalletExchangeVC
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
